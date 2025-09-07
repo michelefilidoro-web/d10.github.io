@@ -69,10 +69,54 @@
       <img src="cerchio.png"alt="Logo" width="150" height="150" class="me-2"> 
       <h1 class="display-4 mt-5">D10</h1>
       <h3>L'arte di sconfiggere il fuoco</h3>
-      <button type="button" class="btn btn-light fw-light text-dark mt-3">
-        Contattaci
-      </button>      
+    <button type="button" class="btn btn-light fw-light text-dark mt-3"
+      data-bs-toggle="modal" data-bs-target="#contattiModal">
+      Contattaci
+    </button>   
     </div>
+    <!-- Modal -->
+<div class="modal fade" id="contattiModal" tabindex="-1" aria-labelledby="contattiModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="contattiModalLabel">Contattaci</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+
+      <!-- Body con form -->
+      <div class="modal-body text-dark">
+        <!-- Testo introduttivo -->
+        <h2 class="fw-light mb-4 text-center">Compila per essere contattato</h2>
+
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nome" required>
+            </div>
+            <div class="col-md-6">
+              <label for="cognome" class="form-label">Cognome</label>
+              <input type="text" class="form-control" id="cognome" required>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="submit" class="btn btn-dark">Invia</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </header>
 
   <!-- Contenuto principale -->
