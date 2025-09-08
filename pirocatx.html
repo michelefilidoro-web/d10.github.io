@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="stylepages.css">
 </head>
 
+
+
     <body>
         <!-- Navbar -->
         <!-- NAVBAR DESKTOP -->
@@ -165,28 +167,38 @@
     }
     </style>
 
-  <div id="container1" class="section mt-2">
-    <div class="container">
-        <h1 class="text-dark mt-5">Sistema PirocaTx</h1>
-    <h3 class="text-dark mt-3">
-      Materie prime ed energia sostenibile da residui organici
-    </h3>
-    <p class="text-dark">
-      Le materie prime così prodotte possono essere ulteriormente utilizzate in una varietà di applicazioni :
-    </p>
-    <ul class="text-dark">
+ <div id="container1" class="section mt-2">
+  <div class="container">
+    <h1 class="text-dark mt-5">Sistema PirocaTx</h1>
+    <h3 class="text-dark mt-3">Materie prime ed energia sostenibile da residui organici</h3>
+    <p class="text-dark mb-0">Scopri come residui agricoli, municipali e industriali diventano biosyngas, bioliquido e biochar.</p>
 
-        <li>Residui agricoli e forestali quali stallatico, residui colturali o residui della lavorazione del legno</li>
-      <li>Residui municipali come fanghi da depurazione, rifiuti organici e rifiuti urbani, residui di mercato e alimentari, residui di fermentazione da impianti di biogas e materiale proveniente dalla cura del verde pubblico</li>
-      <li>Residui industriali per es. dall’industria alimentare e dall'industria cartaria</li>
-      <li>Tutti i residui sono convertiti in tre materie prime di alta qualità in un processo flessibile:</li>
-      <li>Biosyntgas con alto potere calorifico e contenuto di idrogeno fino a oltre il 50% in volume</li>
-      <li>Bioliquido prodotto con alto potere calorifico e bassa corrosività</li>
-      <li>Biochar pulito, stabile con contenuto di carbonio fisso, paragonabile al carbone minerale</li>
-    </ul>
-    </div>
-        
+    <button
+      class="btn btn-outline-dark mt-3"
+      data-bs-toggle="modal"
+      data-bs-target="#textModal"
+      data-title="Sistema PirocaTx"
+      data-content="#det-container1">
+      Mostra di più
+    </button>
   </div>
+</div>
+<!-- Contenuto dettagliato nascosto per container1 -->
+<div id="det-container1" class="d-none">
+  <p class="text-dark">
+    Le materie prime così prodotte possono essere ulteriormente utilizzate in una varietà di applicazioni:
+  </p>
+  <ul class="text-dark">
+    <li>Residui agricoli e forestali quali stallatico, residui colturali o residui della lavorazione del legno</li>
+    <li>Residui municipali come fanghi da depurazione, rifiuti organici e rifiuti urbani, residui di mercato e alimentari, residui di fermentazione da impianti di biogas e materiale proveniente dalla cura del verde pubblico</li>
+    <li>Residui industriali per es. dall’industria alimentare e dall'industria cartaria</li>
+    <li>Tutti i residui sono convertiti in tre materie prime di alta qualità in un processo flessibile:</li>
+    <li>Biosyntgas con alto potere calorifico e contenuto di idrogeno fino a oltre il 50% in volume</li>
+    <li>Bioliquido prodotto con alto potere calorifico e bassa corrosività</li>
+    <li>Biochar pulito, stabile con contenuto di carbonio fisso, paragonabile al carbone minerale</li>
+  </ul>
+</div>
+
 
     <script>
         window.addEventListener("load", () => {
@@ -648,5 +660,36 @@ continuo.</li>
 
     <!-- JS personalizzato -->
     <script src="script.js"></script>
+    <!-- MODAL RIUTILIZZABILE -->
+<div class="modal fade" id="textModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="textModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+      <div class="modal-body"><!-- qui iniettiamo il contenuto --></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Apre il modal e carica il contenuto nascosto indicato in data-content
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-bs-target="#textModal"][data-content]');
+    if (!btn) return;
+
+    const modal = document.getElementById('textModal');
+    const title = btn.getAttribute('data-title') || '';
+    const contentSelector = btn.getAttribute('data-content');
+    const src = document.querySelector(contentSelector);
+
+    modal.querySelector('.modal-title').textContent = title;
+    modal.querySelector('.modal-body').innerHTML = src ? src.innerHTML : '<p>Contenuto non disponibile.</p>';
+  });
+</script>
+
     </body>
 </html>
