@@ -1,0 +1,189 @@
+/* Personalizzazioni extra */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+    font: 'San Francisco', Helvetica, Arial, san-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;  
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+  .navbar a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+  }
+
+  h1.display-4 {
+    font-weight: 600;   /* testo più spesso (da 100 a 900, dipende dal font) */
+    color: #b33f2a;     /* sostituisci con il colore che preferisci */
+  }
+
+
+
+
+  h1, h3 {
+    font-weight: 700;
+  }
+
+  header {
+    color: #ffffff;             /* testo bianco */
+    min-height: 25vh;           /* altezza minima */
+    
+    display: flex;              /* abilita Flexbox */
+    flex-direction: column;     /* direzione verticale */
+    justify-content: center;    /* centra verticalmente */
+    align-items: center;        /* centra orizzontalmente */
+    
+    text-align: center;         /* centro testo multi-linea */
+    font-weight: 1000;           /* testo più grasso */
+    background-color: #000000;
+    /* background-image: url('sfondo.jpg');
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; */
+  }
+  
+
+  main {
+    flex-grow: 1; /* occupa tutto lo spazio disponibile tra navbar e footer */
+    color: #ffffff; /* testo bianco sopra lo sfondo scuro/immagine */
+  }
+  
+  .custom-footer {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05), #f8f9fa);
+    color: #6c757d; /* testo grigio */
+  }
+  
+  .custom-footer h5 {
+    color: #495057; /* titoli leggermente più scuri */
+  }
+  
+  .custom-footer a {
+    color: #6c757d;
+  }
+  
+  .custom-footer a:hover {
+    color: #343a40; /* più scuro al passaggio */
+  }
+  
+  .footer-social {
+    margin-left: 32%; /* o quanto ti serve */
+  }
+  /* ✅ Fix mobile overflow */
+.my-section, .my-sectiond { width: 100%; } /* non usare 100vw */
+html, body { overflow-x: hidden; }
+
+/* ✅ Animazioni base */
+:root {
+  --reveal-distance: 18px;
+  --reveal-duration: 600ms;
+  --reveal-ease: cubic-bezier(.2,.65,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Stato iniziale (nascosto) */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+  will-change: opacity, transform;
+  transition:
+    opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease);
+}
+
+/* Stato visibile */
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variante più “hero” */
+.reveal-zoom {
+  opacity: 0;
+  transform: translateY(10px) scale(.98);
+  transition:
+    opacity 700ms var(--reveal-ease),
+    transform 700ms var(--reveal-ease);
+}
+.reveal-zoom.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ✅ Micro-interazione bottoni */
+.btn {
+  transform: translateZ(0); /* anti-jank */
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.btn:hover, .btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+}
+
+/* ✅ Navbar “elevata” allo scroll */
+.navbar {
+  transition: box-shadow 200ms ease, background-color 200ms ease;
+}
+.navbar.is-scrolled {
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  background-color: rgba(33,37,41,.95); /* bg-dark con leggera trasparenza */
+}
+
+/* ✅ Hover link navbar (underline morbida) */
+.navbar .nav-link {
+  position: relative;
+}
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 2px;
+  background: currentColor;
+  opacity: .6;
+  transition: width 220ms ease;
+}
+.navbar .nav-link:hover::after,
+.navbar .nav-link:focus-visible::after {
+  width: 100%;
+}
+
+/* ✅ Footer gradient già chiaro con testo grigio (se vuoi tenerlo) */
+.custom-footer {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05), #f8f9fa);
+  color: #6c757d;
+}
+.custom-footer h5 { color: #495057; }
+.custom-footer a { color: #6c757d; }
+.custom-footer a:hover { color: #343a40; }
+
+.btn-apple {
+  display:inline-block;
+  padding: 0.75rem 1.8rem;
+  font-weight:600;
+  font-size:1rem;
+  color:#fff;
+  background:#000;
+  border:none;
+  border-radius:9999px; /* super tondo */
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+.btn-apple:hover {
+  background:#fff;
+  color:#000;
+  box-shadow:0 0 0 2px #000 inset; /* opzionale: sottile bordo nero */
+}
+.btn-apple:active {
+  transform:scale(.97); /* piccolo “click effect” */
+}

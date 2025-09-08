@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>D10 - Antincendio</title>
+  <link rel="icon" type="image/png" href="img/cerchio.png">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- CSS personalizzato -->
+  <link rel="stylesheet" href="stylepages.css">
+</head>
+
+    <body>
+        <!-- Navbar -->
+        <!-- NAVBAR DESKTOP -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-none d-lg-block">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="img/logo_white.png" alt="Logo" width="50" height="20" class="me-2">
+            </a>
+            <div class="collapse navbar-collapse position-absolute top-50 start-50 translate-middle">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="antincendio.html">Antincendio</a></li>
+                <li class="nav-item"><a class="nav-link" href="mitigazione.html">Mitigazione Rischio Esplosione</a></li>
+                <li class="nav-item"><a class="nav-link" href="hybrid.html">Hybrid</a></li>
+                <li class="nav-item"><a class="nav-link active" href="pirocatx.html">PirocaTx</a></li>
+                <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
+            </ul>
+            </div>
+        </div>
+        </nav>
+
+        <!-- NAVBAR MOBILE -->
+        <nav class="navbar navbar-dark bg-dark d-lg-none">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="img/logo_white.png" alt="Logo" width="45" height="20" class="me-2">
+            </a>
+
+            <!-- Bottone toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Offcanvas -->
+            <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="mobileMenu">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="antincendio.html">Antincendio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mitigazione.html">Mitigazione Rischio Esplosione</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hybrid.html">Hybrid</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="pirocatx.html">PirocaTx</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </nav>
+    <header class="p-3 text-center py-5">
+      <style>
+    /* stato iniziale */
+    #logo, #scritta {
+      opacity: 0;
+    }
+
+    /* fade-in classico */
+    .fade-in {
+      animation: fadeIn 1s forwards;
+    }
+
+    /* fade + slide-up */
+    .fade-in-up {
+      animation: fadeInUp 1s forwards;
+    }
+
+    /* animazioni */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); /* parte leggermente più in basso */
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+  </style>
+    <div class="container">
+      <img id="logo" src="img/logo.png"alt="Logo" width="226" height="100" class="me-2"> 
+      <h1 id="scritta" class="display-4 mt-3">D10 S.R.L.</h1>
+    </div>
+     <script>
+    const logo = document.getElementById("logo");
+    const scritta = document.getElementById("scritta");
+
+    // logo fade-in all'avvio
+    window.addEventListener("load", () => {
+      logo.classList.add("fade-in");
+    });
+
+    // quando finisce l'animazione del logo → scritta fade-in + slide-up
+    logo.addEventListener("animationend", () => {
+      scritta.classList.add("fade-in-up");
+    });
+  </script>
+</header>
+    <main>
+    <style>
+      #container1 {      /* centra sul desktop */
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        width: 100vw;
+        opacity: 0;
+        }
+
+
+
+    /* scritte inizialmente invisibili */
+    #container1 h1,
+    #container1 h3,
+    #container1 p,
+    #container1 ul {
+      opacity: 0;
+    }
+
+    /* animazioni */
+    .fade-in {
+      animation: fadeIn 0.5s forwards;
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    </style>
+
+  <div id="container1" class="section mt-2">
+    <div class="container">
+        <h1 class="text-dark mt-5">Sistema PirocaTx</h1>
+    <h3 class="text-dark mt-3">
+      Materie prime ed energia sostenibile da residui organici
+    </h3>
+    <p class="text-dark">
+      Le materie prime così prodotte possono essere ulteriormente utilizzate in una varietà di applicazioni :
+    </p>
+    <ul class="text-dark">
+
+        <li>Residui agricoli e forestali quali stallatico, residui colturali o residui della lavorazione del legno</li>
+      <li>Residui municipali come fanghi da depurazione, rifiuti organici e rifiuti urbani, residui di mercato e alimentari, residui di fermentazione da impianti di biogas e materiale proveniente dalla cura del verde pubblico</li>
+      <li>Residui industriali per es. dall’industria alimentare e dall'industria cartaria</li>
+      <li>Tutti i residui sono convertiti in tre materie prime di alta qualità in un processo flessibile:</li>
+      <li>Biosyntgas con alto potere calorifico e contenuto di idrogeno fino a oltre il 50% in volume</li>
+      <li>Bioliquido prodotto con alto potere calorifico e bassa corrosività</li>
+      <li>Biochar pulito, stabile con contenuto di carbonio fisso, paragonabile al carbone minerale</li>
+    </ul>
+    </div>
+        
+  </div>
+
+    <script>
+        window.addEventListener("load", () => {
+      const container = document.getElementById("container1");
+      const h1 = container.querySelector("h1");
+      const h3 = container.querySelector("h3");
+      const rest = [container.querySelector("p"), container.querySelector("ul")];
+
+      // prima compare il box
+      container.classList.add("fade-in");
+
+      // quando il box ha finito → parte H1
+      container.addEventListener("animationend", () => {
+        h1.classList.add("fade-in-up");
+
+        // H3 dopo 0.2s
+        setTimeout(() => {
+          h3.classList.add("fade-in-up");
+        }, 200);
+
+        // resto (p e ul) con delay di 0.2s ciascuno
+        rest.forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add("fade-in-up");
+          }, 400 + index * 200);
+        });
+      }, { once: true });
+    });
+
+    window.addEventListener("load", () => {
+      const container = document.getElementById("container2");
+      const h3 = container.querySelector("h3");
+      const rest = [container.querySelector("p"), container.querySelector("ul")];
+
+      // prima compare il box
+      container.classList.add("fade-in");
+
+      // quando il box ha finito → parte H1
+      container.addEventListener("animationend", () => {
+        h3.classList.add("fade-in-up");
+
+        // H3 dopo 0.2s
+        setTimeout(() => {
+          p.classList.add("fade-in-up");
+        }, 200);
+
+        // resto (p e ul) con delay di 0.2s ciascuno
+        rest.forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add("fade-in-up");
+          }, 400 + index * 200);
+        });
+      }, { once: true });
+    });
+    </script>
+    <style>
+      #container2 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+      }
+
+        /* scritte inizialmente invisibili */
+    #container2 h1,
+    #container2 h3,
+    #container2 p,
+    #container2 ul {
+      opacity: 0;
+    }
+
+    /* animazioni */
+    .fade-in {
+      animation: fadeIn 0.5s forwards;
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    </style>
+    <div id="container2" class="section mt-2">
+            <div class="container">
+                 <h3 class="text-dark mt-3">
+            Applicazioni materie prime prodotte
+            </h3>
+    <p class="text-dark">
+      Con il processo T10 un'ampia varietà di biomassa e residui organici può essere riciclata in modo sostenibile:
+    </p>
+    <ul class="text-dark">   
+      <li>Produzione di elettricità e calore utilizzando tutti i prodotti in situ</li>
+      <li>Possibilità di produrre carburante di qualità attraverso raffinazione del bioliquido</li>
+      <li>Produzione decentralizzata di idrogeno da gas di sintesi per uso industriale</li>
+      <li>Utilizzo del biochar per produzione di energia, come ammendante, come additivo per mangimi per animali o in processi tecnici</li>
+      <li>Uso del biosyntgas nei processi di sintesi per la produzione di prodotti chimici di base o carburanti</li>
+    </ul>
+            </div>
+       
+  </div>
+
+      <style>
+      #container3 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+
+        }
+    </style>
+
+    <div id="container3" class="section mt-2">
+            <div class="container">
+
+                <h1 class="text-dark mt-5">Processo T10</h1>
+            <h3 class="text-dark mt-3">
+            Pirocatalisi
+            </h3>
+            <p class="text-dark">
+            L'innovativo processo è stato sviluppato dai nostri tecnici e messo a punto in uno dei più grandi
+            centri di ricerca tedeschi, converte una grande varietà di materiali residuali in gas, carbone e
+            bioliquido di alta qualità in un affidabile processo termico:
+            </p>
+            <h3 class="text-dark">Alimentazione di materie prime</h3>
+            <p class="text-dark">La materia prima viene introdotta tramite un sistema di carico che evita l’ingresso di aria nel
+        reattore. Laddove necessario, è possibile eseguire un pretrattamento a monte del materiale da
+        trattare. Il sistema può funzionare con un tasso di umidità variabile del 10% a più del 30%, le
+        dimensioni della materia prima in ingresso possono variare da 3 mm a 30 mm e contenuto in plastica
+        dal 10% al 15%.</p>
+            <h3 class="text-dark">Carbonizzazione</h3>
+            <p class="text-dark">Nel primo stadio del reattore lineare la biomassa viene carbonizzata e convertita in
+        biochar in assenza di ossigeno a temperature medie (400 ° -500 °). I composti organici
+        volatili e l'acqua evaporano. Sotto queste condizioni di processo ottimizzate e l'uso
+        integrato di catalizzatore autoprodotto dal processo, si riduce la
+        formazione di catrame indesiderato.</p>
+            <h3 class="text-dark">Reformer catalitico</h3>
+            <p class="text-dark">Nel secondo stadio del reattore, il biochar e i vapori del primo
+        stadio vengono ulteriormente riscaldati a 500 ° - 700 °. I prodotti
+        intermedi vengono ulteriormente raffinati mediante cracking
+        catalitico e reforming, così ottenuto.</p>
+            <h3 class="text-dark">Trattamento del gas di processo</h3>
+            <p class="text-dark">La fase aeriforme viene raffreddata e separata in gas di sintesi, obioliquido e
+        acqua di processo. Il gas di sintesi viene liberato dalle particelle e dagli
+        aerosol in uno stadio di purificazione.</p>
+
+            <img src="img/t10.png" alt="T10_2" class="img-responsive">
+
+            <style>
+            .img-responsive {
+                width: 100%;              /* sempre occupa tutta la larghezza disponibile */
+                max-width: 600px;         /* limite su desktop */
+                border-radius: 20px;
+                display: block;
+                margin: 30px auto;
+            }
+
+            /* quando lo schermo è stretto (telefono), max-width scende a 500px */
+            @media (max-width: 768px) {
+                .img-responsive {
+                max-width: 500px;
+                }
+            }
+            </style>
+    </div>
+                        
+
+    </div>
+
+        <style>
+      #container4 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+
+        }
+    </style>
+    <div id="container4" class="section mt-2">
+            <div class="container">
+
+                <h3 class="text-dark mt-3">
+            Soluzione flessibile e prodotti di alta qualità
+            </h3>
+    <p class="text-dark">
+      Per l'utilizzo energetico di residui organici, sono stati sviluppati vari processi come combustione
+        industriale, produzione di biogas e generatori endotermici. A seconda del materiale da trattare, il
+        processo T10 può offrire importanti vantaggi.
+    </p>
+    <div class="text-center">
+    <img src="img/t10_2.png" alt="T10_2" class="img-responsive2">
+    </div>
+    <style>
+  .img-responsive2 {
+    width: 100%;              /* sempre occupa tutta la larghezza disponibile */
+    max-width: 1000px;         /* limite su desktop */
+    border-radius: 20px;
+    display: block;
+    margin: 30px auto;
+  }
+
+  /* quando lo schermo è stretto (telefono), max-width scende a 500px */
+  @media (max-width: 768px) {
+    .img-responsive {
+      max-width: 500px;
+    }
+  }
+</style>
+
+<ul class="text-dark">   
+      <li>Con una capacità di trattamento di circa 3000 tonnellate di residui secchi all'anno, la
+tecnologia T10 è particolarmente adatta per lo smaltimento e la produzione
+dell'energia decentralizzata di residui problematici come fanghi di depurazione o rifiuti
+alimentari con residui di materiale d’imballaggio.</li>
+      <li>T10 può trattare quasi tutti i residui organici solidi dopo un pretrattamento
+appropriato. Gli impianti possono essere progettati appositamente per materie prime miste
+e variabili con un contenuto di plastica fino al 15%.</li>
+      <li>T10 raggiunge una qualità di prodotto eccezionalmente elevata, consentendo una
+vasta gamma di applicazioni. Il modo più semplice è generare elettricità e calore
+attraverso un sistema cogenerativo. Il biochar e il bioliquido possono essere
+immagazzinati e possono essere convertiti in elettricità su richiesta.</li>
+      <li>Per tutti i prodotti, sono in fase di sviluppo metodi di riciclaggio. Ad esempio, il bioliquido
+prodotto può essere raffinato e convertito in carburante diesel e benzina conforme agli
+standard. Interessante è anche l'uso per l’industria chimica del bioliquido e del gas di sintesi.</li>
+      <li>Il gas di sintesi può anche essere utilizzato come fonte di idrogeno verde per applicazioni
+industriali. Questo è un altro esempio del grande potenziale del processo T10.</li>
+        <li>Il processo T10 è efficiente e affidabile. Oltre l'80% dell'energia primaria
+contenuta nella materia prima essiccata è disponibile dopo aver dedotto il calore di
+processo nei prodotti. Il nostro design di sistema è ottimizzato per un funzionamento
+continuo.</li>
+    </ul>
+            </div>
+        
+    </div>
+  </div>
+
+
+  <section class="py-5" style="background:#000;">
+  <style>
+    .products-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 12px;
+      color: #fff;
+    }
+
+    .products-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 16px;
+    }
+    .products-title { margin: 0; font-weight: 600; }
+
+    .carousel {
+      display: flex; gap: 16px;
+      overflow-x: auto;
+      padding: 8px 10vw;                 /* peek laterale delle card */
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+    .carousel::-webkit-scrollbar { display: none; }
+    .carousel { scrollbar-width: none; }
+
+    .card-prod {
+      flex: 0 0 70vw;                    /* larghezza su mobile */
+      max-width: 520px;                  /* limite su desktop */
+      background: #fff;
+      color: #111;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+      scroll-snap-align: center;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .card-prod.is-active {
+      transform: scale(1.03);
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    }
+
+    .prod-name { margin: 0 0 6px; font-size: 1.25rem; font-weight: 700; }
+    .prod-sub  { margin: 0; color: #444; }
+
+    .slider-ctrls { display:flex; align-items:center; gap:8px; }
+    .btn-arrow {
+      border: none; border-radius: 999px;
+      padding: 10px 14px;
+      background: #fff; color:#000;
+      cursor: pointer; opacity: .9;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-arrow:disabled { opacity:.35; cursor: default; }
+    .btn-arrow:not(:disabled):hover { opacity:1; transform: translateY(-1px); }
+
+    @media (min-width: 768px) { .card-prod { flex-basis: 50vw; } }
+    @media (min-width: 1024px) {
+      .card-prod { flex-basis: 420px; }
+      .carousel { padding-inline: 8vw; }
+    }
+     .carousel, .carousel * { scroll-behavior: auto; }
+  </style>
+
+  <div class="products-wrap">
+    <div class="products-head">
+        <div class="row text-center">
+                  <h2 class="products-title">Prodotti</h2>
+        </div>
+
+      <div class="slider-ctrls">
+        <button class="btn-arrow" id="prevP" aria-label="Slide precedente">◀</button>
+        <button class="btn-arrow" id="nextP" aria-label="Slide successiva">▶</button>
+      </div>
+    </div>
+
+    <div class="carousel" id="prodCarousel" aria-label="Slideshow prodotti">
+      <!-- Slides bianche -->
+      <article class="card-prod">
+        <h3 class="prod-name">T10-001</h3>
+        <p class="prod-sub">Portata nominale 10 kg/h</p>
+      </article>
+
+      <article class="card-prod">
+        <h3 class="prod-name">T10-003</h3>
+        <p class="prod-sub">Portata nominale 30 kg/h</p>
+      </article>
+
+      <article class="card-prod">
+        <h3 class="prod-name">T10-05</h3>
+        <p class="prod-sub">Portata nominale 500 kg/h</p>
+      </article>
+
+      <article class="card-prod">
+        <h3 class="prod-name">T10-1</h3>
+        <p class="prod-sub">Portata nominale 1.000 kg/h</p>
+      </article>
+
+      <article class="card-prod">
+        <h3 class="prod-name">T10-2</h3>
+        <p class="prod-sub">Portata nominale 2.000 kg/h</p>
+      </article>
+    </div>
+  </div>
+
+  
+  <script>
+    const carousel = document.getElementById('prodCarousel');
+    const cards = Array.from(carousel.querySelectorAll('.card-prod'));
+    const prev = document.getElementById('prevP');
+    const next = document.getElementById('nextP');
+
+    function centerIndex() {
+      const c = carousel.getBoundingClientRect();
+      const cx = c.left + c.width / 2;
+      let best = 0, dist = Infinity;
+      cards.forEach((card, i) => {
+        const r = card.getBoundingClientRect();
+        const mx = r.left + r.width / 2;
+        const d = Math.abs(mx - cx);
+        if (d < dist) { dist = d; best = i; }
+      });
+      return best;
+    }
+
+    function setActive(i) {
+      cards.forEach(el => el.classList.remove('is-active'));
+      if (cards[i]) cards[i].classList.add('is-active');
+      prev.disabled = (i <= 0);
+      next.disabled = (i >= cards.length - 1);
+    }
+
+    // ⛔️ NESSUNO SCROLL in init
+    window.addEventListener('load', () => {
+      setActive(centerIndex());
+    });
+
+    // Navigazione SOLO su click (qui usiamo smooth ma solo orizzontale nel container)
+    function goTo(i) {
+      const card = cards[i];
+      if (!card) return;
+      const left = card.offsetLeft - (carousel.clientWidth - card.clientWidth) / 2;
+      carousel.scrollTo({ left, behavior: 'smooth' });
+      setTimeout(() => setActive(i), 200);
+    }
+
+    prev.addEventListener('click', () => goTo(Math.max(0, centerIndex() - 1)));
+    next.addEventListener('click', () => goTo(Math.min(cards.length - 1, centerIndex() + 1)));
+
+    let t;
+    carousel.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => setActive(centerIndex()), 80);
+    });
+
+    // ❌ niente tabindex/focus automatico
+    // (se l'avevi prima, rimuovilo o non chiamare focus)
+  </script>
+</section>
+
+            
+
+    </main>
+        
+
+        <footer class="custom-footer pt-4 mt-3">
+        <div class="container">
+        <div class="row">
+            <!-- Colonna contatti -->
+            <div class="col-md-4 mb-3">
+            <h5>Contatti</h5>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-envelope me-2"></i> 
+                <a href="mailto:info@iltuosito.it" class="text-secondary text-decoration-none">ammi@d10.srl</a>
+                </li>
+                <li><i class="bi bi-telephone me-2"></i> 
+                <a href="tel:+390123456789" class="text-secondary text-decoration-none">+39 393 959 5415</a>
+                </li>
+                <li><i class="bi bi-geo-alt me-2"></i> Via Milano, 67
+                28065 Cerano (NO)</li>
+            </ul>
+            </div>
+    
+            <!-- Colonna social -->
+            <div class="col-md-4 mb-3 footer-social">
+            <h5>Seguici</h5>
+            <a href="#" class="text-secondary me-3"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-secondary me-3"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-secondary me-3"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-secondary"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+    
+        <hr class="bg-secondary">
+    
+        <div class="text-center pb-3">
+            <p class="mb-0">&copy; 2025 - D10 S.R.L.</p>
+        </div>
+        </div>
+    </footer>
+    
+    
+
+    <!-- Bootstrap JS (con Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS personalizzato -->
+    <script src="script.js"></script>
+    </body>
+</html>

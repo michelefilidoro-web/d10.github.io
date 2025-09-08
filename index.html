@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>D10</title>
-  <link rel="icon" type="image/png" href="cerchio.png">
+  <link rel="icon" type="image/png" href="img/cerchio.png">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
@@ -18,14 +18,16 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-none d-lg-block">
   <div class="container-fluid">
     <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="logo_white.png" alt="Logo" width="45" height="20" class="me-2">
+      <img src="img/logo_white.png" alt="Logo" width="50" height="20" class="me-2">
     </a>
     <div class="collapse navbar-collapse position-absolute top-50 start-50 translate-middle">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="watercloud.html">WaterCloud®</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">HyperMist®</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Contatti</a></li>
+        <li class="nav-item"><a class="nav-link" href="antincendio.html">Antincendio</a></li>
+        <li class="nav-item"><a class="nav-link" href="mitigazione.html">Mitigazione Rischio Esplosione</a></li>
+        <li class="nav-item"><a class="nav-link" href="hybrid.html">Hybrid</a></li>
+        <li class="nav-item"><a class="nav-link" href="pirocatx.html">PirocaTx</a></li>
+        <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
       </ul>
     </div>
   </div>
@@ -36,7 +38,7 @@
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="logo_white.png" alt="Logo" width="45" height="20" class="me-2">
+      <img src="img/logo_white.png" alt="Logo" width="45" height="20" class="me-2">
     </a>
 
     <!-- Bottone toggle -->
@@ -53,9 +55,11 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="watercloud.html">WaterCloud®</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">HyperMist®</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contatti</a></li>
+          <li class="nav-item"><a class="nav-link" href="antincendio.html">Antincendio</a></li>
+          <li class="nav-item"><a class="nav-link" href="mitigazione.html">Mitigazione Rischio Esplosione</a></li>
+          <li class="nav-item"><a class="nav-link" href="hybrid.html">Hybrid</a></li>
+          <li class="nav-item"><a class="nav-link" href="pirocatx.html">PirocaTx</a></li>
+          <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
         </ul>
       </div>
     </div>
@@ -65,80 +69,72 @@
 
   <!-- Hero / Intro -->
   <header class="p-3 text-center py-5">
+      <style>
+    /* stato iniziale */
+    #logo, #scritta {
+      opacity: 0;
+    }
+
+    /* fade-in classico */
+    .fade-in {
+      animation: fadeIn 1s forwards;
+    }
+
+    /* fade + slide-up */
+    .fade-in-up {
+      animation: fadeInUp 1s forwards;
+    }
+
+    /* animazioni */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); /* parte leggermente più in basso */
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+  </style>
     <div class="container">
-      <img src="cerchio.png"alt="Logo" width="150" height="150" class="me-2"> 
-      <h1 class="display-4 mt-5">D10</h1>
-      <h3>L'arte di sconfiggere il fuoco</h3>
-    <button type="button" class="btn btn-light fw-light text-dark mt-3"
-      data-bs-toggle="modal" data-bs-target="#contattiModal">
-      Contattaci
-    </button>   
+      <img id="logo" src="img/logo.png"alt="Logo" width="340" height="150" class="me-2"> 
+      <h1 id="scritta" class="display-4 mt-5">D10 S.R.L.</h1>
     </div>
-    <!-- Modal -->
-<div class="modal fade" id="contattiModal" tabindex="-1" aria-labelledby="contattiModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Header -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="contattiModalLabel">Contattaci</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-      </div>
+     <script>
+    const logo = document.getElementById("logo");
+    const scritta = document.getElementById("scritta");
 
-      <!-- Body con form -->
-      <div class="modal-body text-dark">
-        <!-- Testo introduttivo -->
-        <h2 class="fw-light mb-4 text-center">Compila per essere contattato</h2>
+    // logo fade-in all'avvio
+    window.addEventListener("load", () => {
+      logo.classList.add("fade-in");
+    });
 
-        <form>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label for="nome" class="form-label">Nome</label>
-              <input type="text" class="form-control" id="nome" required>
-            </div>
-            <div class="col-md-6">
-              <label for="cognome" class="form-label">Cognome</label>
-              <input type="text" class="form-control" id="cognome" required>
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" required>
-          </div>
-        </form>
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="submit" class="btn btn-dark">Invia</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-  </header>
+    // quando finisce l'animazione del logo → scritta fade-in + slide-up
+    logo.addEventListener("animationend", () => {
+      scritta.classList.add("fade-in-up");
+    });
+  </script>
+</header>
 
   <!-- Contenuto principale -->
   <main>
-    <section class="my-section">
+    <section class="antincendio mt-3">
       <div class="container py-5">
-        <h1 class="text-center text-dark ">WaterCloud®</h1>
+        <h1 class="text-center text-dark ">Antincendio</h1>
         <h3 class="text-center text-dark mt-4">
-          Sicurezza Antideflagrazione</h3>
+          Sottotitolo</h3>
         <p class="text-center text-dark mt-3">
-          WaterCloud® è un sistema innovativo basato sulla tecnologia ad acqua ultra finemente nebulizzata.
+          Testo esteso con immagini.
         </p>
-      <div class="text-center mt-5">
-        <video autoplay loop muted playsinline width="80%">
-          <source src="video1.mp4" type="video/mp4">
-          Il tuo browser non supporta i video HTML5.
-        </video>
-           
-      </div>
       <div class="text-center">
-        <a href="watercloud.html" class="btn btn-dark fw-dark text-light mt-3">
-          Scopri di più su WaterCloud®
+        <a href="antincendio.html" class="btn btn-apple">
+          Scopri di più
         </a>
         
       </div>
@@ -146,68 +142,309 @@
       </div>
     </section>
     <style>
-      .my-section {
+      .antincendio {
         width: 100vw; /* copre tutto lo schermo in larghezza */
         background-color: rgba(0, 0, 0, 0.05); /* sfondo scuro leggero */
       }
-      .my-section h1 {
+      .antincendio h1 {
       font-weight:700; /* super bold */
-    }
-    .my-video {
-  display: block;         /* evita comportamenti inline */
-  margin: 50px auto 0;    /* 50px di spazio sopra, centrato orizzontalmente */
-  max-width: 80%;         /* limita la larghezza */
-  border-radius: 12px;    /* opzionale: angoli arrotondati */
-}
-
+    } 
     </style>  
 
-<section class="my-sectiond">
+<section class="mitigazione mt-3">
   <div class="container py-5">
-    <h1 class="text-center text-dark">HyperMist®</h1>
+    <h1 class="text-center text-dark">Mitigazione rischio esplosione</h1>
     <h3 class="text-center text-dark mt-4">
-      Impianti antincendio innovativi</h3>
-    <p class="text-center text-dark mt-3">
-      Il sistema Hypermist® è un innovativo e rivoluzionario impianto antincendio che basa la sua efficacia di estinzione sull’utilizzo di acqua pressurizzata e nebulizzata, in cui le gocce rilasciate hanno diametro dell’ordine di Micron.
-    </p>
-  <div class="text-center mt-5">
-    <video autoplay loop muted playsinline width="80%">
-      <source src="video1.mp4" type="video/mp4">
-      Il tuo browser non supporta i video HTML5.
-    </video>
-       
-  </div>
+      Sottotitolo</h3>
+    <p class="text-center text-dark mt-3">Testo esteso con immagini.</p>
+
   <div class="text-center">
-    <button type="button" class="btn btn-dark fw-dark text-light mt-3">
-      Scopri di più su HyperMist®
-    </button> 
+      <a href="mitigazione.html" class="btn btn-apple">
+        Scopri di più
+      </a>
   </div>
     
   </div>
 </section>
 <style>
-  .my-sectiond {
+  .mitigazione {
     width: 100vw; /* copre tutto lo schermo in larghezza */
-    background-color: rgb(255, 255, 255); /* sfondo scuro leggero */
+    background-color: rgb(0, 0, 0, 0.05); /* sfondo scuro leggero */
   }
-  .my-sectiond h1 {
+  .mitigazione h1 {
   font-weight:700; /* super bold */
 }
-.my-video {
-display: block;         /* evita comportamenti inline */
-margin: 50px auto 0;    /* 50px di spazio sopra, centrato orizzontalmente */
-max-width: 80%;         /* limita la larghezza */
-border-radius: 12px;    /* opzionale: angoli arrotondati */
+</style>  
+
+<section class="Hybrid mt-3">
+      <div class="container py-5">
+        <h1 class="text-center text-dark ">Hybrid</h1>
+        <h3 class="text-center text-dark mt-4">Sottotitolo</h3>
+        <p class="text-center text-dark mt-3">
+          Testo esteso con immagini.
+        </p>
+      <div class="text-center">
+        <a href="hybrid.html" class="btn btn-apple">
+          Scopri di più
+        </a>
+        
+      </div>
+        
+      </div>
+    </section>
+    <style>
+      .Hybrid {
+        width: 100vw; /* copre tutto lo schermo in larghezza */
+        background-color: rgba(0, 0, 0, 0.05); /* sfondo scuro leggero */
+      }
+      .Hybrid h1 {
+      font-weight:700; /* super bold */
+    } 
+    </style>  
+
+<section class="PirocaTx mt-3">
+  <div class="container py-5">
+    <h1 class="text-center text-dark">PirocaTx</h1>
+    <h3 class="text-center text-dark mt-4">Energia e materie prime da residui organici</h3>
+    <p class="text-center text-dark mt-3">
+      La tecnologia di PirocaTx permette di riciclare un'ampia varietà di biomassa e residui organici in modo sostenibile, ricavando materie prime ed energia sostenibile.
+    </p>
+    <div class="text-center">
+        <div class="text-center">
+    <img src="img/t10_home.png" alt="T10_2" class="img-responsive">
+    </div>
+    <style>
+  .img-responsive {
+    width: 100%;              /* sempre occupa tutta la larghezza disponibile */
+    max-width: 450px;         /* limite su desktop */
+    border-radius: 20px;
+    display: block;
+    margin: 30px auto;
+  }
+
+  /* quando lo schermo è stretto (telefono), max-width scende a 500px */
+  @media (max-width: 768px) {
+    .img-responsive {
+      max-width: 300px;
+    }
+  }
+</style>
+
+  <div class="text-center">
+        <a href="pirocatx.html" class="btn btn-apple">
+          Scopri di più
+        </a>
+  </div>
+    
+  </div>
+</section>
+<style>
+  .PirocaTx {
+    width: 100vw; /* copre tutto lo schermo in larghezza */
+    background-color: rgb(0, 0, 0, 0.05); /* sfondo scuro leggero */
+  }
+  .PirocaTx h1 {
+  font-weight:700; /* super bold */
+}
+</style>  
+<!-- ===== Slideshow: centrale + due laterali (4 slide) ===== -->
+<section class="center-slider py-5 mt-3">
+  <div class="slider-stage">
+    <div class="slide"><img src="img/erogatore.png" alt="Slide 1"></div>
+    <div class="slide"><img src="img/sistema_attivo.png" alt="Slide 2"></div>
+    <div class="slide"><img src="img/team.png" alt="Slide 3"></div>
+    <div class="slide"><img src="img/t10_slide.png" alt="Slide 4"></div>
+  </div>
+
+  <div class="slider-dots" aria-label="Indicatore slideshow" role="tablist">
+    <!-- i pallini vengono creati via JS -->
+  </div>
+</section>
+
+  <div class="slider-dots" aria-label="Indicatore slideshow" role="tablist">
+  <!-- i pallini vengono creati via JS -->
+</div>
+<style>
+.center-slider{
+  background:#000;
+  overflow:hidden;
+  display:flex;
+  flex-direction: column;      /* <= in colonna, non affiancati */
+  justify-content:center;
+  align-items:center;
 }
 
-</style>  
-      
+.slider-dots{
+  position: relative;
+  z-index: 5;                  /* sta sopra al palco */
+  margin-top: .8rem;           /* un po’ di spazio sotto lo slider */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:.6rem;
+}
+
+
+/* Palco */
+.slider-stage{
+  position:relative;
+  width:min(95vw, 1400px);   /* più largo */
+  height:min(75vh, 800px);   /* più alto */
+}
+
+
+/* Slide base */
+.slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transform:translate(-50%,-50%) scale(.7);
+  left:50%; top:50%;
+  transition:transform .7s ease, opacity .7s ease, z-index .7s ease, filter .7s ease;
+  z-index:1; pointer-events:none;
+}
+.slide img{
+  width:clamp(320px, 75vw, 1100px); /* più grande */
+  height:100%;
+  max-height:min(75vh, 800px);
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,.6);
+}
+
+/* Stati */
+.slide.center{ 
+  opacity:1; transform:translate(-50%,-50%) scale(1.1); /* scala più grande */
+  z-index:3; filter:none; pointer-events:auto;
+}
+.slide.left{
+  opacity:.55; z-index:2;
+  transform:translate(calc(-50% - 32vw), -50%) scale(.9) rotateY(12deg);
+}
+.slide.right{
+  opacity:.55; z-index:2;
+  transform:translate(calc(-50% + 32vw), -50%) scale(.9) rotateY(-12deg);
+}
+.slide.back{ opacity:0; z-index:1; transform:translate(-50%,-50%) scale(.7); }
+
+/* Responsività */
+@media (max-width: 768px){
+  .slide.left{  transform:translate(calc(-50% - 42vw), -50%) scale(.85) rotateY(10deg); }
+  .slide.right{ transform:translate(calc(-50% + 42vw), -50%) scale(.85) rotateY(-10deg); }
+}
+.slider-dots{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:.6rem;
+  margin-top:1rem;
+}
+.slider-dots .dot{
+  width:.7rem; height:.7rem;
+  border-radius:9999px;
+  background:rgba(255,255,255,.35);
+  border:1px solid rgba(255,255,255,.9);
+  cursor:pointer;
+  transition:transform .2s ease, background-color .2s ease, opacity .2s ease;
+  opacity:.9;
+}
+.slider-dots .dot:hover{ transform:scale(1.2); }
+.slider-dots .dot.active{
+  background:#fff;
+  transform:scale(1.25);
+  opacity:1;
+}
+</style>
+
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slider-stage .slide'));
+  const N = slides.length; // 4
+  let i = 0;
+  const INTERVAL = 4000;     // autoplay ogni 4s
+  let timer = null;
+  let resumeTimeout = null;  // pausa dopo click dot
+
+  // crea i pallini
+  const dotsWrap = document.querySelector('.slider-dots');
+  const dots = [];
+  for (let k = 0; k < N; k++) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-label', `Vai alla slide ${k+1}`);
+    b.dataset.index = k;
+    dotsWrap.appendChild(b);
+    dots.push(b);
+  }
+
+  function setClasses() {
+    slides.forEach(s => s.className = 'slide'); // reset
+    const left  = (i - 1 + N) % N;
+    const right = (i + 1) % N;
+    const back  = (i + 2) % N;
+
+    slides[i].classList.add('center');
+    slides[left].classList.add('left');
+    slides[right].classList.add('right');
+    slides[back].classList.add('back');
+
+    dots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === i);
+      d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+    });
+  }
+
+  function next(){ i = (i + 1) % N; setClasses(); }
+
+  function startTimer(){
+    stopTimer();
+    timer = setInterval(next, INTERVAL);
+  }
+  function stopTimer(){
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  // clic sui pallini: vai alla slide e PAUSA 7s, poi riprendi
+  dotsWrap.addEventListener('click', (e) => {
+    const dot = e.target.closest('.dot');
+    if (!dot) return;
+    const idx = Number(dot.dataset.index);
+    if (!Number.isInteger(idx)) return;
+
+    i = idx;
+    setClasses();
+
+    // pausa manuale di 7s
+    stopTimer();
+    if (resumeTimeout) clearTimeout(resumeTimeout);
+    resumeTimeout = setTimeout(() => {
+      startTimer();
+      resumeTimeout = null;
+    }, 7000);
+  });
+
+  // avvio: autoplay SEMPRE attivo (nessuna pausa su hover)
+  setClasses();
+  startTimer();
+})();
+</script>
+
+
+
+
+<!-- ===== /Slideshow ===== -->
+
+
+
   
 
   </main>
 
   <!-- Footer -->
-  <footer class="custom-footer pt-4 mt-5">
+  <footer class="custom-footer pt-4 mt-1">
     <div class="container">
       <div class="row">
         <!-- Colonna contatti -->
@@ -215,10 +452,10 @@ border-radius: 12px;    /* opzionale: angoli arrotondati */
           <h5>Contatti</h5>
           <ul class="list-unstyled">
             <li><i class="bi bi-envelope me-2"></i> 
-              <a href="mailto:info@iltuosito.it" class="text-secondary text-decoration-none">info@iltuosito.it</a>
+              <a href="mailto:info@iltuosito.it" class="text-secondary text-decoration-none">ammi@d10.srl</a>
             </li>
             <li><i class="bi bi-telephone me-2"></i> 
-              <a href="tel:+390123456789" class="text-secondary text-decoration-none">+39 012 345 6789</a>
+              <a href="tel:+390123456789" class="text-secondary text-decoration-none">+39 393 959 5415</a>
             </li>
             <li><i class="bi bi-geo-alt me-2"></i> Via Milano, 67
               28065 Cerano (NO)</li>
@@ -238,7 +475,7 @@ border-radius: 12px;    /* opzionale: angoli arrotondati */
       <hr class="bg-secondary">
   
       <div class="text-center pb-3">
-        <p class="mb-0">&copy; 2025 - Il tuo sito web</p>
+        <p class="mb-0">&copy; 2025 - D10 S.R.L.</p>
       </div>
     </div>
   </footer>
@@ -250,5 +487,6 @@ border-radius: 12px;    /* opzionale: angoli arrotondati */
 
   <!-- JS personalizzato -->
   <script src="script.js"></script>
+
 </body>
 </html>

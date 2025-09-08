@@ -22,7 +22,7 @@ body {
 
   h1.display-4 {
     font-weight: 600;   /* testo più spesso (da 100 a 900, dipende dal font) */
-    color: #923925;     /* sostituisci con il colore che preferisci */
+    color: #b33f2a;     /* sostituisci con il colore che preferisci */
   }
 
 
@@ -34,7 +34,7 @@ body {
 
   header {
     color: #ffffff;             /* testo bianco */
-    min-height: 50vh;           /* altezza minima */
+    min-height: 70vh;           /* altezza minima */
     
     display: flex;              /* abilita Flexbox */
     flex-direction: column;     /* direzione verticale */
@@ -166,3 +166,24 @@ html, body { overflow-x: hidden; }
 .custom-footer h5 { color: #495057; }
 .custom-footer a { color: #6c757d; }
 .custom-footer a:hover { color: #343a40; }
+
+.btn-apple {
+  display:inline-block;
+  padding: 0.75rem 1.8rem;
+  font-weight:600;
+  font-size:1rem;
+  color:#fff;
+  background:#000;
+  border:none;
+  border-radius:9999px; /* super tondo */
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+.btn-apple:hover {
+  background:#fff;
+  color:#000;
+  box-shadow:0 0 0 2px #000 inset; /* opzionale: sottile bordo nero */
+}
+.btn-apple:active {
+  transform:scale(.97); /* piccolo “click effect” */
+}
