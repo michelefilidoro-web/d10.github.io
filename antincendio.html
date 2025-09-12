@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>D10 - HyperMIST®</title>
+  <link rel="icon" type="image/png" href="img/cerchio.png">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- CSS personalizzato -->
+  <link rel="stylesheet" href="stylepages.css">
+</head>
+
+    <body>
+        <!-- Navbar -->
+        <!-- NAVBAR DESKTOP -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom d-none d-lg-block" style="background-color: #181818;">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="img/logo_white.png" alt="Logo" width="50" height="20" class="me-2">
+            </a>
+            <div class="collapse navbar-collapse position-absolute top-50 start-50 translate-middle">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="antincendio.html">HyperMIST®</a></li>
+        <li class="nav-item"><a class="nav-link" href="pirocatx.html">PyrocaTx®</a></li>
+        <li class="nav-item"><a class="nav-link" href="chisiamo.html">Chi Siamo</a></li>
+                <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
+            </ul>
+            </div>
+        </div>
+        </nav>
+
+        <!-- NAVBAR MOBILE -->
+        <nav class="navbar navbar-dark navbar-custom d-lg-none" style="background-color: #181818;">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="img/logo_white.png" alt="Logo" width="45" height="20" class="me-2">
+            </a>
+
+            <!-- Bottone toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Offcanvas -->
+            <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="mobileMenu">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="antincendio.html">HyperMIST®</a></li>
+        <li class="nav-item"><a class="nav-link" href="pirocatx.html">PyrocaTx®</a></li>
+        <li class="nav-item"><a class="nav-link" href="chisiamo.html">Chi Siamo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contatti.html">Contatti</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </nav>
+        <main>
+          <style>
+    /* testo inizialmente nascosto (solo elementi testuali dentro .section-box) */
+    .section-box :is(h1,h2,h3,h4,h5,h6,p,li,figcaption,.lead,.btn) {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    .reveal-text { animation: textIn .45s ease forwards; }
+    @keyframes textIn { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .section-box :is(h1,h2,h3,h4,h5,h6,p,li,figcaption,.lead,.btn) {
+        opacity: 1 !important; transform: none !important; animation: none !important;
+      }
+    }
+
+    /* Stile box (facoltativo) */
+    .section-box {
+      text-align: left;
+      background: #ebebeb;
+      padding: 30px;
+      max-width: 100vw;
+      margin: 12px auto;
+    }
+  </style>
+
+  <!-- JS: anima SOLO il testo all'apertura -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.section-box').forEach(section => {
+        const texts = section.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,.lead,.btn');
+        texts.forEach((el, i) => {
+          setTimeout(() => el.classList.add('reveal-text'), i * 300); // stagger
+        });
+      });
+    });
+  </script>
+            
+           <div class="section-box mt-2">  <!-- 👈 AGGIUNTA CLASS section-box -->
+    <div class="container">
+      <h1 class="text-dark">HyperMIST®</h1>
+      <h3 class="text-dark mt-3">Innovazione dell'antincendio</h3>
+      <p class="text-dark">Un innovativo e potente sistema antincendio a base d’acqua ultra-fine.</p>
+    </div>
+
+    <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
+      <div class="hm-track" role="list">
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T"><img src="img/cosmos22t.jpg" alt="Vista 4 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
+      </div>
+      <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+      <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+
+
+    </section>
+
+  <div class="col">
+    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
+  </div>   
+  </div>
+
+  <!-- ======== SEZIONE 2 ======== -->
+  <div id="container2" class="section-box mt-2"> <!-- 👈 PRIMA era "section", ora ha section-box -->
+    <div class="container">
+      <h1 class="text-dark">HyperCURTAIN®</h1>
+      <h3 class="text-dark mt-3">Innovazione dell'antincendio</h3>
+      <p class="text-dark">Hypermist® is gentle and environmentally friendly...</p>
+    </div>
+
+    <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
+      <div class="hm-track" role="list">
+        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi1.jpg" alt="Vista 2 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi3.jpg" alt="Vista 2 HyperMIST"></figure>
+      </div>
+      <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+      <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+    </section>
+      <div class="col">
+    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+
+<style>
+      #container3 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+
+        }
+    </style>
+    <div id="container3" class="section mt-2">
+            <div class="container">
+                <h1 class="text-dark">HyperHYDRANT®</h1>
+                <h3 class="text-dark mt-3">
+            Innovazione dell'antincendio
+            </h3>
+    <p class="text-dark">
+      Hypermist® is gentle and environmentally friendly, using only water as its active agent – the Earth's natural solvent.
+    </p>
+    </div>
+        <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
+  <div class="hm-track" role="list">
+    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
+    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
+    <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 2 HyperMIST"></figure>
+    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_1.jpg" alt="Vista 3 HyperMIST"></figure>
+    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_3.jpg" alt="Vista 4 HyperMIST"></figure>
+    <!-- Esempi extra -->
+    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
+    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
+  </div>
+
+  <!-- Controlli -->
+  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+</section> 
+  <div class="col">
+    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
+  </div>
+    </div>
+
+<style>
+      #container5 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+
+        }
+    </style>
+    <div id="container5" class="section mt-2">
+            <div class="container">
+                <h1 class="text-dark">HyperALARP®</h1>
+                <h3 class="text-dark mt-3">
+            Come passare da zona 1 a zona 2
+            </h3>
+    <p class="text-dark">
+      Sistema di Mitigazione rischio esplosione. 
+    </p>
+    </div>       
+    <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
+  <div class="hm-track" role="list">
+    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
+     <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T"><img src="img/cosmos22t.jpg" alt="Vista 4 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
+    <!-- Esempi extra -->
+    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
+    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
+  </div>
+
+  <!-- Controlli -->
+  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+</section>       
+  <div class="col">
+    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
+  </div>
+    </div>
+
+<style>
+      #container6 {
+        text-align: left;
+        background: #ebebeb;
+        padding: 30px;
+        opacity: 100;
+        max-width: 100vw;
+
+        }
+    </style>
+    <div id="container6" class="section mt-2">
+            <div class="container">
+                <h1 class="text-dark">Patended</h1>
+                <h3 class="text-dark mt-3">
+            Impianto Antincendio Ibrido Multifunzione
+            </h3>
+    <p class="text-dark">
+      Impianto Antincendio <b>Brevettato a livello Europeo</b>.
+    </p>
+    </div>
+        <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
+  <div class="hm-track" role="list">
+    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T"><img src="img/cosmos22t.jpg" alt="Vista 4 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 1 HyperMIST"></figure>
+    <!-- Esempi extra -->
+    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
+    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
+  </div>
+
+  <!-- Controlli -->
+  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+</section>     
+  <div class="col">
+    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
+  </div>    
+    </div>
+
+        </main>
+
+    <footer class="custom-footer pt-4 mt-1">
+    <div class="container">
+      <div class="row">
+        <!-- Colonna contatti -->
+        <div class="col-md-4 mb-3">
+          <h5>Contatti</h5>
+          <ul class="list-unstyled">
+            <li><i class="bi bi-envelope me-2"></i> 
+              <a href="mailto:info@iltuosito.it" class="text-secondary text-decoration-none">ammi@d10.srl</a>
+            </li>
+            <li><i class="bi bi-telephone me-2"></i> 
+              <a href="tel:+390123456789" class="text-secondary text-decoration-none">+39 393 959 5415</a>
+            </li>
+            <li><i class="bi bi-geo-alt me-2"></i> Via Milano, 67
+              28065 Cerano (NO)</li>
+          </ul>
+        </div>
+  
+        <!-- Colonna social -->
+        <div class="col-md-4 mb-3 ms-md-auto footer-social">
+          <h5>Partner</h5>
+          <a href="https://go050.com" class="text-secondary me-3" target="_blank" rel="noopener noreferrer">
+  <p class="mb-0">go050.com</p>
+</a>
+
+        </div>
+      </div>
+  
+      <hr class="bg-secondary">
+  
+      <div class="text-center pb-3">
+        <p class="mb-0">&copy; 2025 - D10 S.R.L.</p>
+      </div>
+    </div>
+  </footer>
+    
+    
+
+    <!-- Bootstrap JS (con Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS personalizzato -->
+    <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,280 @@
+/* Personalizzazioni extra */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+    font: 'San Francisco', Helvetica, Arial, san-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;  
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+  .navbar a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+  }
+
+h1.display-4 {
+  font-weight: 600;
+   font-size: 33px; 
+  background: linear-gradient(to top, #00B6ED, #ffffff); /* dal rosso intenso al rosa chiaro */
+  -webkit-background-clip: text;  /* necessario per WebKit (Chrome, Safari) */
+  -webkit-text-fill-color: transparent; /* rende trasparente il "colore base" del testo */
+  background-clip: text; /* per compatibilità */
+}
+
+
+
+
+  h1, h3 {
+    font-weight: 700;
+  }
+
+  header {
+    color: #ffffff;             /* testo bianco */
+    min-height: 25vh;           /* altezza minima */
+    
+    display: flex;              /* abilita Flexbox */
+    flex-direction: column;     /* direzione verticale */
+    justify-content: center;    /* centra verticalmente */
+    align-items: center;        /* centra orizzontalmente */
+    
+    text-align: center;         /* centro testo multi-linea */
+    font-weight: 1000;           /* testo più grasso */
+    background-color: #000000;
+    /* background-image: url('sfondo.jpg');
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; */
+  }
+  
+
+  main {
+    flex-grow: 1; /* occupa tutto lo spazio disponibile tra navbar e footer */
+    color: #ffffff; /* testo bianco sopra lo sfondo scuro/immagine */
+  }
+  
+  .custom-footer {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.05), #f8f9fa);
+    color: #6c757d; /* testo grigio */
+  }
+  
+  .custom-footer h5 {
+    color: #495057; /* titoli leggermente più scuri */
+  }
+  
+  .custom-footer a {
+    color: #6c757d;
+  }
+  
+  .custom-footer a:hover {
+    color: #343a40; /* più scuro al passaggio */
+  }
+  
+.footer-social {
+  margin-left: 0;          /* niente offset fisso */
+  text-align: start;       /* testo a sinistra dentro la colonna */
+}
+
+@media (max-width: 767.98px) {
+  .footer-social {
+    text-align: left;    /* opzionale: centrato solo su mobile */
+  }
+}
+  /* ✅ Fix mobile overflow */
+.my-section, .my-sectiond { width: 100%; } /* non usare 100vw */
+html, body { overflow-x: hidden; }
+
+/* ✅ Animazioni base */
+:root {
+  --reveal-distance: 18px;
+  --reveal-duration: 600ms;
+  --reveal-ease: cubic-bezier(.2,.65,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Stato iniziale (nascosto) */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+  will-change: opacity, transform;
+  transition:
+    opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease);
+}
+
+/* Stato visibile */
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variante più “hero” */
+.reveal-zoom {
+  opacity: 0;
+  transform: translateY(10px) scale(.98);
+  transition:
+    opacity 700ms var(--reveal-ease),
+    transform 700ms var(--reveal-ease);
+}
+.reveal-zoom.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ✅ Micro-interazione bottoni */
+.btn {
+  transform: translateZ(0); /* anti-jank */
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.btn:hover, .btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+}
+
+/* ✅ Navbar “elevata” allo scroll */
+.navbar {
+  transition: box-shadow 200ms ease, background-color 200ms ease;
+}
+.navbar.is-scrolled {
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  background-color: rgba(33,37,41,.95); /* bg-dark con leggera trasparenza */
+}
+
+/* ✅ Hover link navbar (underline morbida) */
+.navbar .nav-link {
+  position: relative;
+}
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 2px;
+  background: currentColor;
+  opacity: .6;
+  transition: width 220ms ease;
+}
+.navbar .nav-link:hover::after,
+.navbar .nav-link:focus-visible::after {
+  width: 100%;
+}
+
+/* ✅ Footer gradient già chiaro con testo grigio (se vuoi tenerlo) */
+.custom-footer {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05), #f8f9fa);
+  color: #6c757d;
+}
+.custom-footer h5 { color: #495057; }
+.custom-footer a { color: #6c757d; }
+.custom-footer a:hover { color: #343a40; }
+
+.btn-apple {
+  display:inline-block;
+  padding: 0.75rem 1.8rem;
+  font-weight:600;
+  font-size:1rem;
+  color:#fff;
+  background:#000;
+  border:none;
+  border-radius:9999px; /* super tondo */
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+.btn-apple:hover {
+  background:#fff;
+  color:#000;
+  box-shadow:0 0 0 2px #000 inset; /* opzionale: sottile bordo nero */
+}
+.btn-apple:active {
+  transform:scale(.97); /* piccolo “click effect” */
+}
+
+/* ====== STILI CAROUSEL (no background) ====== */
+.hypermist-carousel{
+--hm-height: clamp(176px, 38vh, 416px); /* -20% */
+  --hm-gap: 1rem;              /* spazio virtuale fra slide */
+  --hm-side-scale: .82;        /* scala delle laterali */
+  --hm-side-fade: .55;         /* opacità laterali */
+  position: relative;
+  isolation: isolate;          /* evita interferenze di z-index */
+  height: var(--hm-height);
+  width: min(900px, 80vw);
+  margin: 24px auto 0;
+  touch-action: pan-y;         /* consenti swipe orizzontale */
+  background: transparent;     /* nessuno sfondo */
+}
+.hm-caption{
+  margin: 12px auto 0;
+  width: min(900px, 80vw);
+  text-align: center;
+  font-size: clamp(14px, 1.8vh, 16px);
+  line-height: 1.4;
+  color: #1f2937;            /* grigio scuro */
+  min-height: 1.6em;         /* evita “salti” di layout quando cambia testo */
+  opacity: .92;
+  transition: opacity .2s ease;
+}
+
+.hm-track{
+  position: absolute; inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden; /* nasconde fuori campo */
+}
+
+.hm-slide{
+  position: absolute;
+  width: clamp(240px, 60%, 820px);  /* slide centrale */
+  aspect-ratio: 16/9;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  overflow: hidden;
+  transform-origin: center center;
+  transition: transform .45s cubic-bezier(.2,.7,.2,1), 
+              opacity .45s ease, filter .45s ease;
+  will-change: transform, opacity, filter;
+  background: transparent;
+}
+
+.hm-slide img{
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* Pulsanti */
+.hm-btn{
+  position: absolute; top: 50%; translate: 0 -50%;
+  width: 44px; height: 44px; border-radius: 999px;
+  border: 0; background: rgba(0,0,0,.55); color: #fff;
+  display: grid; place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  transition: background .2s ease, transform .1s ease;
+}
+.hm-btn:hover{ background: rgba(0,0,0,.7); }
+.hm-btn:active{ transform: translateY(-50%) scale(.96); }
+.hm-prev{ left: 6px; }
+.hm-next{ right: 6px; }
+
+@media (hover:none){
+  .hm-btn{ background: rgba(0,0,0,.4); }
+}
+
+/* Accessibilità focus */
+.hm-btn:focus-visible{
+  outline: 3px solid #4da3ff; outline-offset: 2px;
+}
+
+/* (Opzionale) integra con i tuoi container esistenti */
+#container1 .hypermist-carousel{ margin-top: 16px; }
+
