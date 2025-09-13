@@ -1,0 +1,9 @@
+# admin/.htaccess
+
+# Impedisci l’accesso diretto a admin.html (può servirlo solo index.php)
+<Files "admin.html">
+  Require all denied
+</Files>
+
+# (opzionale) niente listing della directory
+Options -Indexes

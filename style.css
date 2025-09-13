@@ -18,6 +18,7 @@ body {
   .navbar a {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
+    min-height: 5vh;
   }
 
 h1.display-4 {
@@ -196,5 +197,26 @@ html, body { overflow-x: hidden; }
   box-shadow:0 0 0 2px #000 inset; /* opzionale: sottile bordo nero */
 }
 .btn-apple:active {
+  transform:scale(.97); /* piccolo “click effect” */
+}
+
+.btn-apple-nav {
+  display:inline-block;
+  padding: 0.75rem 1.8rem;
+  font-weight:600;
+  font-size:1rem;
+  color:#ffffff;
+  background:#343434;
+  border:none;
+  border-radius:9999px; /* super tondo */
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+.btn-apple-nav:hover {
+  background:#ffffff;
+  color:#000000;
+  box-shadow:0 0 0 2px #000 inset; /* opzionale: sottile bordo nero */
+}
+.btn-apple-nav:active {
   transform:scale(.97); /* piccolo “click effect” */
 }
