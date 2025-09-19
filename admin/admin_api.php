@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/../auth.php';    // controlli sessione/ruolo
 require_role_api([1]);               // SOLO admin, risponde 401 in JSON se non autorizzato
 
-require __DIR__ . '/../config.php';  // connessione DB (PDO)
+require __DIR__ . '/../../secure/config.php';  // connessione DB (PDO)
 
 try {
   $dsn = 'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8mb4';
