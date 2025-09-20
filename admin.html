@@ -1,0 +1,13 @@
+<?php
+require __DIR__ . '/auth.php';
+require_role([1]); // solo ruolo 1 (admin)
+?>
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>Area Admin</title></head>
+<body>
+  <h1>Ciao, <?php echo htmlspecialchars($_SESSION['nome']); ?>!</h1>
+  <p>Sei nell’area admin.</p>
+  <a href="logout.php">Logout</a>
+</body>
+</html>

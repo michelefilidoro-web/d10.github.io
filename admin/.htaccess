@@ -1,9 +1,25 @@
-# admin/.htaccess
-
-# Impedisci l’accesso diretto a admin.html (può servirlo solo index.php)
-<Files "admin.html">
-  Require all denied
-</Files>
-
-# (opzionale) niente listing della directory
+# /admin/.htaccess
 Options -Indexes
+
+RewriteEngine On
+RewriteBase /admin/
+
+# Se esistono file o directory reali (API, asset, ecc.), servili normalmente
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Route "belle" -> index.php
+# /admin/                -> page=admin
+RewriteRule ^$ index.php?page=admin [QSA,L]
+
+# /admin/gestioneutenti  -> page=gestioneutenti
+RewriteRule ^gestioneutenti/?$ index.php?page=gestioneutenti [QSA,L]
+
+# (opzionale) /admin/admin  -> page=admin
+RewriteRule ^admin/?$ index.php?page=admin [QSA,L]
+
+# Blocca gli .html se provati direttamente
+<FilesMatch "\.(html)$">
+  Require all denied
+</FilesMatch>

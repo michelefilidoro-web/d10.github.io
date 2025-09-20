@@ -1,0 +1,9 @@
+# utente/.htaccess
+
+# Impedisci l’accesso diretto a utente.html (può servirlo solo index.php)
+<Files "utente.html">
+  Require all denied
+</Files>
+
+# (opzionale) niente listing della directory
+Options -Indexes

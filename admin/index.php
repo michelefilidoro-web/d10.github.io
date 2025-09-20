@@ -1,8 +1,19 @@
 <?php
-// admin/index.php
-require __DIR__ . '/../auth.php';   // usa auth.php dalla cartella superiore
-require_role([1]);                  // consenti solo ruolo 1 (admin)
+// /admin/index.php
+require __DIR__ . '/../auth.php';
+require_role([1]); // solo admin
 
-// Se arrivi qui sei autorizzato: servi l'HTML dell'area admin
 header('Content-Type: text/html; charset=utf-8');
-readfile(__DIR__ . '/admin.html');
+
+// mappa sicura delle pagine servibili
+$pages = [
+  'admin'           => __DIR__ . '/admin.html',
+  'gestioneutenti'  => __DIR__ . '/gestioneutenti.html',
+];
+
+$page = $_GET['page'] ?? 'admin';
+if (!isset($pages[$page])) {
+  $page = 'admin';
+}
+
+readfile($pages[$page]);
