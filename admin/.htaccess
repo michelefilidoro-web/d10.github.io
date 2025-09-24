@@ -16,6 +16,9 @@ RewriteRule ^$ index.php?page=admin [QSA,L]
 # /admin/gestioneutenti  -> page=gestioneutenti
 RewriteRule ^gestioneutenti/?$ index.php?page=gestioneutenti [QSA,L]
 
+# /admin/tickets         -> page=tickets   <-- AGGIUNTA
+RewriteRule ^tickets/?$ index.php?page=tickets [QSA,L]
+
 # (opzionale) /admin/admin  -> page=admin
 RewriteRule ^admin/?$ index.php?page=admin [QSA,L]
 

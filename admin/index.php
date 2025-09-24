@@ -9,6 +9,7 @@ header('Content-Type: text/html; charset=utf-8');
 $pages = [
   'admin'           => __DIR__ . '/admin.html',
   'gestioneutenti'  => __DIR__ . '/gestioneutenti.html',
+  'tickets'         => __DIR__ . '/tickets.html',
 ];
 
 $page = $_GET['page'] ?? 'admin';

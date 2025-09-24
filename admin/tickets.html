@@ -16,10 +16,10 @@
         <a class="nav-link px-3" href="/admin/">Messaggi</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active px-3" href="/admin/gestioneutenti">Gestione Utenti</a>
+        <a class="nav-link px-3" href="/admin/gestioneutenti">Gestione Utenti</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link px-3" href="/admin/tickets">Gestione tickets</a>
+      <a class="nav-link active px-3" href="/admin/tickets">Gestione tickets</a>
     </li>
     </ul>
 
@@ -29,10 +29,245 @@
 
 
 
-<!-- Toast container -->
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index:1080">
-  <div id="toastStack"></div>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">Tickets</h1>
+    <span id="totalSpan" class="text-muted small">Totale: —</span>
+  </div>
+
+  <form id="searchForm" class="row g-2 mb-3">
+    <div class="col-sm-6 col-md-8">
+      <input type="text" class="form-control" id="q" placeholder="Cerca in email, oggetto o messaggio…">
+    </div>
+    <div class="col-sm-3 col-md-2 d-grid">
+      <button class="btn btn-dark" type="submit">Cerca</button>
+    </div>
+    <div class="col-sm-3 col-md-2 d-grid">
+      <button id="resetBtn" class="btn btn-outline-secondary" type="button">Reset</button>
+    </div>
+  </form>
+
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" id="ticketsTable">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Data</th>
+            <th>Email</th>
+            <th>Oggetto</th>
+            <th>Messaggio</th>
+            <th>Stato</th>
+            <th class="text-end">Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="7" class="text-center text-muted py-4">Caricamento…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <span id="pageInfo" class="small text-muted"></span>
+      <nav><ul class="pagination mb-0" id="pager"></ul></nav>
+    </div>
+  </div>
 </div>
+
+<!-- Modal dettaglio -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Dettaglio ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row mb-0" id="detailDL"></dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* === Helpers === */
+function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
+function cut(s,len=80){ if(!s) return ''; s=String(s).trim(); return s.length<=len?s:s.slice(0,len-1)+'…'; }
+function showToast(message, variant='primary'){
+  const div = document.createElement('div');
+  div.className = `toast align-items-center text-bg-${variant} border-0`;
+  div.role = 'alert'; div.ariaLive='assertive'; div.ariaAtomic='true';
+  div.innerHTML = `<div class="d-flex"><div class="toast-body">${esc(message)}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
+  document.getElementById('toastStack').appendChild(div);
+  new bootstrap.Toast(div, { delay: 2500 }).show();
+}
+
+/* === Riferimenti === */
+const tableBody = document.querySelector('#ticketsTable tbody');
+const totalSpan = document.getElementById('totalSpan');
+const pager = document.getElementById('pager');
+const pageInfo = document.getElementById('pageInfo');
+const searchForm = document.getElementById('searchForm');
+const qInput = document.getElementById('q');
+const resetBtn = document.getElementById('resetBtn');
+
+let state = { page: 1, q: '' };
+
+/* === Stato: select helper === */
+function stateSelect(current){
+  const c = Number(current) === 1 ? 1 : 0;
+  return `<select class="form-select form-select-sm w-auto" data-state>
+    <option value="1" ${c===1?'selected':''}>Aperto</option>
+    <option value="0" ${c===0?'selected':''}>Chiuso</option>
+  </select>`;
+}
+
+/* === Caricamento dati === */
+async function loadTickets(){
+  tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">Caricamento…</td></tr>';
+  try{
+    const params = new URLSearchParams({ action:'list_tickets', page: state.page, q: state.q });
+    const res = await fetch('admin_tickets_api.php?' + params.toString(), {
+      headers: { 'Accept':'application/json' },
+      credentials:'same-origin'
+    });
+    if(res.status === 401){ window.location.href = '/login.php?redirect=/admin/tickets'; return; }
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || 'Errore');
+
+    totalSpan.textContent = 'Totale: ' + data.total;
+    pageInfo.textContent = `Pagina ${data.page} di ${data.pages}`;
+
+    if(!data.items.length){
+      tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">Nessun ticket trovato.</td></tr>';
+    } else {
+      tableBody.innerHTML = data.items.map(r => `
+        <tr data-id="${r.id}" data-state-original="${Number(r.stato)}">
+          <td>${r.id}</td>
+          <td><span class="text-nowrap">${esc(r.created_at||'')}</span></td>
+          <td><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+          <td>${esc(cut(r.oggetto, 40))}</td>
+          <td>${esc(cut(r.messaggio, 60))}</td>
+          <td>${stateSelect(r.stato)}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-primary" data-view="${r.id}">Vedi</button>
+            <button class="btn btn-sm btn-primary ms-1" data-save>Salva</button>
+            <button class="btn btn-sm btn-outline-secondary ms-1" data-reset>Reset</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // pager
+    pager.innerHTML = '';
+    const addItem = (label, p, disabled=false, active=false) => {
+      const li = document.createElement('li');
+      li.className = 'page-item' + (disabled?' disabled':'') + (active?' active':'');
+      li.innerHTML = `<a class="page-link" href="#">${label}</a>`;
+      li.addEventListener('click', (e) => { e.preventDefault(); if(disabled||active) return; state.page = p; loadTickets(); });
+      pager.appendChild(li);
+    };
+    addItem('«', Math.max(1, data.page-1), data.page<=1, false);
+    const start = Math.max(1, data.page-2);
+    const end = Math.min(data.pages, data.page+2);
+    for(let p=start;p<=end;p++) addItem(String(p), p, false, p===data.page);
+    addItem('»', Math.min(data.pages, data.page+1), data.page>=data.pages, false);
+
+  }catch(err){
+    tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">Errore: ${esc(err.message)}</td></tr>`;
+  }
+}
+
+/* === Ricerca === */
+searchForm.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  state.q = qInput.value.trim();
+  state.page = 1;
+  loadTickets();
+});
+resetBtn.addEventListener('click', ()=>{
+  qInput.value = '';
+  state.q = '';
+  state.page = 1;
+  loadTickets();
+});
+
+/* === Cambi stato: evidenzia riga se diverso dall'originale === */
+document.addEventListener('change', (e)=>{
+  const sel = e.target.closest('select[data-state]');
+  if(!sel) return;
+  const tr = sel.closest('tr');
+  const original = Number(tr.getAttribute('data-state-original'));
+  const current = Number(sel.value);
+  tr.classList.toggle('table-warning', original !== current);
+});
+
+/* === Azioni: Vedi / Salva / Reset === */
+document.addEventListener('click', async (e)=>{
+  // VEDI
+  const viewBtn = e.target.closest('[data-view]');
+  if(viewBtn){
+    const id = viewBtn.getAttribute('data-view');
+    try{
+      const res = await fetch('admin_tickets_api.php?action=view_ticket&id='+encodeURIComponent(id), {
+        headers:{'Accept':'application/json'}, credentials:'same-origin'
+      });
+      if(res.status === 401){ window.location.href = '/login.php?redirect=/admin/tickets'; return; }
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || 'Errore');
+      const r = data.item;
+      const dl = document.getElementById('detailDL');
+      dl.innerHTML = `
+        <dt class="col-sm-3">ID</dt><dd class="col-sm-9">${r.id}</dd>
+        <dt class="col-sm-3">Data</dt><dd class="col-sm-9">${esc(r.created_at||'')}</dd>
+        <dt class="col-sm-3">Email</dt><dd class="col-sm-9"><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></dd>
+        <dt class="col-sm-3">Oggetto</dt><dd class="col-sm-9">${esc(r.oggetto)}</dd>
+        <dt class="col-sm-3">Messaggio</dt><dd class="col-sm-9"><pre class="mb-0" style="white-space:pre-wrap">${esc(r.messaggio)}</pre></dd>
+        <dt class="col-sm-3">Stato</dt><dd class="col-sm-9">${Number(r.stato)===1?'Aperto':'Chiuso'}</dd>
+      `;
+      new bootstrap.Modal(document.getElementById('viewModal')).show();
+    }catch(err){
+      showToast('Errore: '+err.message, 'danger');
+    }
+    return;
+  }
+
+  // SALVA / RESET
+  const tr = e.target.closest('tr[data-id]');
+  if(!tr) return;
+  const id = tr.getAttribute('data-id');
+  const sel = tr.querySelector('select[data-state]');
+
+  if(e.target.closest('[data-reset]')){
+    sel.value = tr.getAttribute('data-state-original');
+    tr.classList.remove('table-warning');
+    return;
+  }
+
+  if(e.target.closest('[data-save]')){
+    const newVal = Number(sel.value);
+    try{
+      const res = await fetch('admin_tickets_api.php', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ action:'update_state', id: Number(id), stato: newVal })
+      });
+      if(res.status === 401){ window.location.href = '/login.php?redirect=/admin/tickets'; return; }
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || 'Errore salvataggio');
+      tr.setAttribute('data-state-original', String(newVal));
+      tr.classList.remove('table-warning');
+      showToast('Stato aggiornato', 'success');
+    }catch(err){
+      showToast(err.message, 'danger');
+    }
+  }
+});
+
+/* === Avvio === */
+loadTickets();
+</script>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
