@@ -268,40 +268,35 @@
     <!-- i pallini vengono creati via JS -->
   </div>
 </section>
-
-  <div class="slider-dots" aria-label="Indicatore slideshow" role="tablist">
-  <!-- i pallini vengono creati via JS -->
+<!-- LIGHTBOX -->
+<div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+  <img class="lightbox-img" alt="">
 </div>
 <style>
 .center-slider{
   background:#000;
   overflow:hidden;
   display:flex;
-  flex-direction: column;      /* <= in colonna, non affiancati */
+  flex-direction: column;
   justify-content:center;
   align-items:center;
-}
-
-.slider-dots{
   position: relative;
-  z-index: 5;                  /* sta sopra al palco */
-  margin-top: .8rem;           /* un po’ di spazio sotto lo slider */
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:.6rem;
+  z-index: 1;
 }
 
-
-/* Palco */
+/* Palco + stato drag */
 .slider-stage{
   position:relative;
-  width:min(95vw, 1400px);   /* più largo */
-  height:min(75vh, 800px);   /* più alto */
+  width:min(95vw, 1400px);
+  height:min(75vh, 800px);
+  touch-action: pan-y;           /* consente swipe orizzontale custom */
+  cursor: grab;
+}
+.slider-stage.dragging{
+  cursor: grabbing;
 }
 
-
-/* Slide base */
 .slide{
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
@@ -311,18 +306,21 @@
   z-index:1; pointer-events:none;
 }
 .slide img{
-  width:clamp(320px, 75vw, 1100px); /* più grande */
+  width:clamp(320px, 75vw, 1100px);
   height:100%;
   max-height:min(75vh, 800px);
   object-fit:cover;
   border-radius:20px;
   box-shadow:0 15px 40px rgba(0,0,0,.6);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* Stati */
 .slide.center{ 
-  opacity:1; transform:translate(-50%,-50%) scale(1.1); /* scala più grande */
+  opacity:1; transform:translate(-50%,-50%) scale(1.1);
   z-index:3; filter:none; pointer-events:auto;
+  cursor: zoom-in;                /* suggerisce clic per ingrandire */
 }
 .slide.left{
   opacity:.55; z-index:2;
@@ -334,17 +332,20 @@
 }
 .slide.back{ opacity:0; z-index:1; transform:translate(-50%,-50%) scale(.7); }
 
-/* Responsività */
 @media (max-width: 768px){
   .slide.left{  transform:translate(calc(-50% - 42vw), -50%) scale(.85) rotateY(10deg); }
   .slide.right{ transform:translate(calc(-50% + 42vw), -50%) scale(.85) rotateY(-10deg); }
 }
+
+/* Dots */
 .slider-dots{
+  position: relative;
+  z-index: 5;
+  margin-top: 1rem;
   display:flex;
   justify-content:center;
   align-items:center;
   gap:.6rem;
-  margin-top:1rem;
 }
 .slider-dots .dot{
   width:.7rem; height:.7rem;
@@ -361,20 +362,58 @@
   transform:scale(1.25);
   opacity:1;
 }
+
+/* Lightbox */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 99999;      /* << molto più alto di qualsiasi slide */
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+  overscroll-behavior: contain;
+}
+.lightbox[aria-hidden="false"]{
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-img{
+  max-width: 95vw;
+  max-height: 95vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.7);
+}
+.lightbox-close{
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px; border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(0,0,0,.35);
+  color: #fff; font-size: 26px; line-height: 1;
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+.lightbox-close:hover{ background: rgba(255,255,255,.1); }
+
 </style>
 
 
 <script>
 (function(){
-  const slides = Array.from(document.querySelectorAll('.slider-stage .slide'));
-  const N = slides.length; // 4
-  let i = 0;
-  const INTERVAL = 4000;     // autoplay ogni 4s
+  const stage   = document.querySelector('.slider-stage');
+  const slides  = Array.from(stage.querySelectorAll('.slide'));
+  const N       = slides.length;
+  const dotsWrap= document.querySelector('.slider-dots');
+  const INTERVAL= 4000;
+  const PAUSE_MS= 7000;
+
+  let i = 0;                    // indice slide corrente (center)
   let timer = null;
-  let resumeTimeout = null;  // pausa dopo click dot
+  let resumeTimeout = null;
 
   // crea i pallini
-  const dotsWrap = document.querySelector('.slider-dots');
   const dots = [];
   for (let k = 0; k < N; k++) {
     const b = document.createElement('button');
@@ -405,40 +444,191 @@
   }
 
   function next(){ i = (i + 1) % N; setClasses(); }
+  function prev(){ i = (i - 1 + N) % N; setClasses(); }
 
-  function startTimer(){
+  function startTimer(){ stopTimer(); timer = setInterval(next, INTERVAL); }
+  function stopTimer(){ if (timer) clearInterval(timer); timer = null; }
+
+  function manualPauseAndResume(){
     stopTimer();
-    timer = setInterval(next, INTERVAL);
-  }
-  function stopTimer(){
-    if (timer) clearInterval(timer);
-    timer = null;
+    if (resumeTimeout) clearTimeout(resumeTimeout);
+    resumeTimeout = setTimeout(() => { startTimer(); resumeTimeout = null; }, PAUSE_MS);
   }
 
-  // clic sui pallini: vai alla slide e PAUSA 7s, poi riprendi
+  // click dots
   dotsWrap.addEventListener('click', (e) => {
     const dot = e.target.closest('.dot');
     if (!dot) return;
     const idx = Number(dot.dataset.index);
     if (!Number.isInteger(idx)) return;
-
-    i = idx;
-    setClasses();
-
-    // pausa manuale di 7s
-    stopTimer();
-    if (resumeTimeout) clearTimeout(resumeTimeout);
-    resumeTimeout = setTimeout(() => {
-      startTimer();
-      resumeTimeout = null;
-    }, 7000);
+    i = idx; setClasses();
+    manualPauseAndResume();
   });
 
-  // avvio: autoplay SEMPRE attivo (nessuna pausa su hover)
+  // --- SWIPE / DRAG (touch + mouse via Pointer Events) ---
+  let isDown = false;
+  let startX = 0, startY = 0;
+  let lastX  = 0, lastY  = 0;
+  let moved  = false;
+  let isScrolling = false;
+  let suppressClick = false;
+
+  const SWIPE_THRESHOLD = 50;   // px per swipe orizzontale
+  const CLICK_THRESHOLD = 8;    // px: sotto è tap
+  const SCROLL_THRESHOLD = 12;  // px: oltre questo in Y => scroll
+  
+
+  const opts = { passive: true };
+
+  function onPointerDown(e){
+  isDown = true;
+  moved = false;
+  isScrolling = false;
+  stage.classList.add('dragging');
+
+  const pt = (e.clientX !== undefined)
+    ? { x: e.clientX, y: e.clientY }
+    : { x: e.touches?.[0]?.clientX, y: e.touches?.[0]?.clientY };
+
+  startX = lastX = pt.x ?? 0;
+  startY = lastY = pt.y ?? 0;
+
+  stopTimer(); // pausa durante il drag
+}
+
+function onPointerMove(e){
+  if (!isDown) return;
+
+  const pt = (e.clientX !== undefined)
+    ? { x: e.clientX, y: e.clientY }
+    : { x: e.touches?.[0]?.clientX, y: e.touches?.[0]?.clientY };
+
+  if (pt.x == null || pt.y == null) return;
+
+  const dx = pt.x - startX;
+  const dy = pt.y - startY;
+  lastX = pt.x;
+  lastY = pt.y;
+
+  // se prevale il movimento verticale oltre soglia => è scroll, non è tap
+  if (Math.abs(dy) > SCROLL_THRESHOLD && Math.abs(dy) > Math.abs(dx)) {
+    isScrolling = true;
+  }
+
+  if (Math.abs(dx) > CLICK_THRESHOLD || Math.abs(dy) > CLICK_THRESHOLD) {
+    moved = true;
+  }
+
+  // Solo se NON stai scrollando, applica l'effetto di resistenza visiva orizzontale
+  if (!isScrolling){
+    const factor = Math.max(-1, Math.min(1, dx / 200)); // -1..1
+    slides[i].style.transform = `translate(calc(-50% + ${factor*8}%), -50%) scale(1.08)`;
+    const leftIdx  = (i - 1 + N) % N;
+    const rightIdx = (i + 1) % N;
+    slides[leftIdx].style.transform  = `translate(calc(-50% - 32vw + ${factor*4}%), -50%) scale(.9) rotateY(12deg)`;
+    slides[rightIdx].style.transform = `translate(calc(-50% + 32vw + ${factor*4}%), -50%) scale(.9) rotateY(-12deg)`;
+  }
+}
+
+function onPointerUp(){
+  if (!isDown) return;
+  isDown = false;
+  stage.classList.remove('dragging');
+
+  // reset stili inline temporanei
+  slides.forEach(s => s.style.transform = '');
+
+  const dx = lastX - startX;
+
+  // Se l'utente stava scrollando la pagina: non fare nulla e sopprimi il click sintetico
+  if (isScrolling){
+    suppressClick = true;
+    setTimeout(() => suppressClick = false, 300); // breve finestra
+    startTimer();
+    return;
+  }
+
+  // Gestione swipe orizzontale
+  if (Math.abs(dx) >= SWIPE_THRESHOLD){
+    if (dx < 0) next(); else prev();
+    manualPauseAndResume();
+  } else {
+    // Potenziale tap: apri lightbox solo se non c'è stato vero movimento
+    if (!moved) openLightbox();
+    startTimer();
+  }
+}
+
+
+  // Supporto Pointer Events (se presenti) altrimenti touch+mouse
+  const hasPointer = 'onpointerdown' in window;
+  if (hasPointer){
+    stage.addEventListener('pointerdown', onPointerDown, opts);
+    window.addEventListener('pointermove', onPointerMove, opts);
+    window.addEventListener('pointerup',   onPointerUp,   opts);
+    window.addEventListener('pointercancel', onPointerUp,  opts);
+  } else {
+    stage.addEventListener('touchstart', onPointerDown, opts);
+    window.addEventListener('touchmove',  onPointerMove, opts);
+    window.addEventListener('touchend',   onPointerUp,   opts);
+    stage.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup',   onPointerUp);
+  }
+
+  // --- LIGHTBOX (click per ingrandire immagine centrale) ---
+  const lightbox      = document.querySelector('.lightbox');
+  const lightboxImg   = document.querySelector('.lightbox-img');
+  const lightboxClose = document.querySelector('.lightbox-close');
+
+  function openLightbox(){
+    const img = slides[i].querySelector('img');
+    if (!img) return;
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || 'Immagine ingrandita';
+    lightbox.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden'; // blocca scroll sotto
+    manualPauseAndResume();                  // pausa mentre l'utente guarda
+    lightboxClose.focus?.();
+  }
+  function closeLightbox(){
+    lightbox.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    // non forziamo subito autoplay: lascio al timer/pausa manuale decidere
+  }
+
+  // Apri il lightbox solo se si clicca la slide centrale
+  stage.addEventListener('click', (e) => {
+    const center = slides[i];
+    if (center.contains(e.target)) openLightbox();
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    // clic fuori dall'immagine o sul bottone => chiudi
+    if (e.target === lightbox || e.target === lightboxImg || e.target === lightboxClose){
+      closeLightbox();
+    }
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  window.addEventListener('keydown', (e) => {
+    if (lightbox.getAttribute('aria-hidden') === 'false' && e.key === 'Escape'){
+      closeLightbox();
+    }
+    // opzionale: frecce per navigare anche nel lightbox
+    if (lightbox.getAttribute('aria-hidden') === 'false' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
+      if (e.key === 'ArrowRight') next(); else prev();
+      // aggiorna immagine nel lightbox
+      const img = slides[i].querySelector('img');
+      if (img) { lightboxImg.src = img.currentSrc || img.src; lightboxImg.alt = img.alt || ''; }
+    }
+  });
+
+  // avvio
   setClasses();
   startTimer();
 })();
 </script>
+
 
 
 

@@ -11,6 +11,148 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <!-- CSS personalizzato -->
   <link rel="stylesheet" href="stylepages.css">
+  <style>
+/* ====== BASE ====== */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#f6f7f9; color:#111; }
+.container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+
+/* ====== CAROUSEL ====== */
+:root{
+  --hm-height: clamp(220px, 56vh, 520px);
+  --hm-side-scale: .9;     /* scala delle laterali (mobile/desktop override sotto) */
+  --hm-side-fade: .35;     /* opacità laterali (mobile) */
+  --hm-side-gap: 1.04;     /* distanza laterali (mobile: accenno) */
+}
+
+.hypermist-carousel{
+  position: relative;
+  isolation: isolate;
+  height: var(--hm-height);
+  width: min(1100px, 90vw);
+  margin: 24px auto 0;
+  touch-action: pan-y; /* lasciamo lo scroll verticale nativo */
+  background: transparent;
+}
+@media (max-width: 768px){
+  .hypermist-carousel{
+    max-height: 230px;
+  }
+}
+
+.hm-track{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+
+.hm-slide{
+  position: absolute;
+  width: var(--hm-slide-w, clamp(260px, 60%, 820px));
+  aspect-ratio: 16/9;
+  border-radius: 18px;                 /* niente angoli arrotondati */
+  overflow: hidden;
+  transform-origin: center center;
+  transition: transform .45s cubic-bezier(.2,.7,.2,1),
+              opacity .45s ease, filter .45s ease;
+  will-change: transform, opacity, filter;
+  background: #000;
+  box-shadow: none;                 /* niente ombre */
+}
+.hm-slide img{
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  border-radius: 0; 
+}
+
+.hm-btn{
+  position: absolute; top: 50%; translate: 0 -50%;
+  width: 44px; height: 44px; border-radius: 999px;
+  border: 0; background: rgba(0,0,0,.55); color: #fff;
+  display: grid; place-items: center; cursor: pointer;
+  transition: background .2s ease, transform .1s ease;
+  z-index: 200;  
+}
+@media (max-width: 768px){
+  .hm-prev{ left: 8px; }
+  .hm-next{ right: 8px; }
+}
+.hm-btn:hover{ background: rgba(0,0,0,.7); }
+.hm-btn:active{ transform: translateY(-50%) scale(.96); }
+.hm-prev{ left: 6px; }
+.hm-next{ right: 6px; }
+.hm-btn:focus-visible{ outline: 3px solid #4da3ff; outline-offset: 2px; }
+
+.hm-caption{
+  margin: 10px auto 0;
+  width: min(1100px, 90vw);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #334155;
+  min-height: 1.6em;
+  opacity: .92;
+  transition: opacity .2s ease;
+}
+
+/* ====== DESKTOP OVERRIDES ====== */
+@media (min-width: 769px){
+  :root{
+    --hm-side-scale: .82;
+    --hm-side-fade: .55;
+    --hm-side-gap: .38;   /* laterali più visibili su desktop */
+  }
+  .hypermist-carousel{ width: min(1100px, 80vw); }
+}
+
+/* ====== MOBILE: centrale quasi piena larghezza ====== */
+@media (max-width: 768px){
+  .hypermist-carousel{
+    width: 100vw;  margin: 0;       /* piena larghezza */
+  }
+  .hm-slide{ --hm-slide-w: 92vw; }  /* centrale grande */
+}
+
+/* ====== LIGHTBOX (condiviso) ====== */
+.lightbox{
+  position: fixed; inset: 0;
+  z-index: 99999;
+  display: grid; place-items: center;
+  background: rgba(0,0,0,.9);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+  overscroll-behavior: contain;
+}
+.lightbox[aria-hidden="false"]{ opacity: 1; pointer-events: auto; }
+.lightbox-img{
+  max-width: 95vw; max-height: 95vh;
+  touch-action: none; will-change: transform;
+  transform: translate(0,0) scale(1);
+  transition: transform .08s ease;
+  cursor: zoom-out; border-radius: 0; box-shadow: none;
+}
+.lightbox.pan-active .lightbox-img{ cursor: grabbing; transition: none; }
+.lightbox-close{
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(0,0,0,.35); color: #fff; font-size: 26px;
+  display: grid; place-items: center; cursor: pointer;
+}
+/* evita scrollbar orizzontale se qualcosa sfora di 1-2px */
+.section-box { overflow-x: hidden; }
+
+/* su mobile: la giostra prende il 100% del contenitore, non 100vw */
+@media (max-width: 768px){
+  .hypermist-carousel{
+    width: 100%;     /* << prima era 100vw */
+    margin: 0;       /* niente margini laterali */
+  }
+  /* centrale grande ma senza sforare: leggermente sotto al 100% */
+  .hm-slide{ --hm-slide-w: 94%; }   /* puoi portare a 96% se vuoi più grande */
+}
+
+</style>
 </head>
 
     <body>
@@ -106,6 +248,7 @@
       });
     });
   </script>
+  <!--Sezione 1-->
             
            <div class="section-box mt-2">  <!-- 👈 AGGIUNTA CLASS section-box -->
     <div class="container">
@@ -115,23 +258,317 @@
     </div>
 
     <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
-      <div class="hm-track" role="list">
-        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
-        <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
-        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
-        <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T"><img src="img/cosmos22t.jpg" alt="Vista 4 HyperMIST"></figure>
-        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
-      </div>
-      <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
-      <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
-
-
-    </section>
-
-  <div class="col">
-    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
-  </div>   
+    <div class="hm-track" role="list">
+      <figure class="hm-slide" role="listitem" data-caption="Cosmos 12">
+        <img src="img/cosmos12.jpg" alt="Cosmos 12">
+      </figure>
+      <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato">
+        <img src="img/cosmos12_inclinato.jpg" alt="Cosmos 12 Inclinato">
+      </figure>
+      <figure class="hm-slide" role="listitem" data-caption="Cosmos 22">
+        <img src="img/cosmos22.jpg" alt="Cosmos 22">
+      </figure>
+      <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T">
+        <img src="img/cosmos22t.jpg" alt="Cosmos 22T">
+      </figure>
+      <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10">
+        <img src="img/comb1L10.jpg" alt="Comb 1 L 10">
+      </figure>
+    </div>
+    <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+    <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+  </section>
+  <div class="hm-caption" aria-live="polite"></div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+  <img class="lightbox-img" alt="">
+</div>
   </div>
+  <script>
+(function(){
+  // Avvia quando il DOM è pronto
+  function ready(fn){
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(fn,0);
+    else document.addEventListener('DOMContentLoaded', fn, { once:true });
+  }
+  ready(() => initHyperMISTCarousel());
+
+  function initHyperMISTCarousel(rootSel = ".hypermist-carousel"){
+    const roots = document.querySelectorAll(rootSel);
+    if (!roots.length) return;
+
+    // ---------- LIGHTBOX (una volta sola) ----------
+    let lightbox = document.querySelector('.lightbox');
+    if (lightbox && lightbox.parentElement !== document.body) document.body.appendChild(lightbox);
+    if (!lightbox){
+      lightbox = document.createElement('div');
+      lightbox.className = 'lightbox';
+      lightbox.setAttribute('role','dialog');
+      lightbox.setAttribute('aria-modal','true');
+      lightbox.setAttribute('aria-hidden','true');
+      lightbox.innerHTML = `
+        <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+        <img class="lightbox-img" alt="">
+      `;
+      document.body.appendChild(lightbox);
+    }
+    const lightboxImg   = lightbox.querySelector('.lightbox-img');
+    const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+    // ---- Stato pinch/zoom condiviso ----
+    let z=1, minZ=1, maxZ=4, tx=0, ty=0, baseW=0, baseH=0, start=null, pinch=null;
+    let lastTap = { t:0, x:0, y:0 };
+
+    function viewportSize(){ return { w: lightbox.clientWidth, h: lightbox.clientHeight }; }
+    function computeBaseFit(){
+      const { w:vw, h:vh } = viewportSize();
+      const iw = lightboxImg.naturalWidth || lightboxImg.clientWidth;
+      const ih = lightboxImg.naturalHeight || lightboxImg.clientHeight;
+      const s0 = Math.min(vw*0.95/iw, vh*0.95/ih);
+      baseW = iw*s0; baseH = ih*s0;
+    }
+    function clampTranslate(){
+      const { w:vw, h:vh } = viewportSize();
+      const W = baseW*z, H = baseH*z;
+      const maxX = Math.max(0,(W-vw)/2), maxY = Math.max(0,(H-vh)/2);
+      tx = Math.max(-maxX, Math.min(maxX, tx));
+      ty = Math.max(-maxY, Math.min(maxY, ty));
+    }
+    function applyTransform(){
+      clampTranslate();
+      lightboxImg.style.transform = `translate(${tx}px, ${ty}px) scale(${z})`;
+      lightbox.classList.toggle('pan-active', !!start);
+      lightboxImg.style.cursor = z>1 ? 'grab' : 'zoom-out';
+    }
+    function setZoom(newZ, cx, cy){
+      const { w:vw, h:vh } = viewportSize();
+      const vx = vw/2, vy = vh/2;
+      newZ = Math.max(minZ, Math.min(maxZ, newZ));
+      tx -= (cx - vx) * (newZ - z) / newZ;
+      ty -= (cy - vy) * (newZ - z) / newZ;
+      z = newZ; applyTransform();
+    }
+    function resetZoom(){ z=1; tx=0; ty=0; pinch=null; start=null; applyTransform(); }
+    const dist=(a,b)=>Math.hypot(a.x-b.x, a.y-b.y);
+    const mid =(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+    const touches=e=>e.touches?Array.from(e.touches).map(t=>({x:t.clientX,y:t.clientY})):null;
+
+    function openLightboxFrom(slideEl){
+      const img = slideEl.querySelector('img'); if (!img) return;
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt || slideEl.dataset.caption || 'Immagine';
+      lightbox.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      if (lightboxImg.complete){ computeBaseFit(); resetZoom(); }
+      else lightboxImg.onload = () => { computeBaseFit(); resetZoom(); };
+      lightboxClose.focus?.();
+    }
+    function closeLightbox(){
+      lightbox.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      resetZoom();
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    window.addEventListener('keydown', e => { if (e.key==='Escape') closeLightbox(); });
+    lightbox.addEventListener('click', e => {
+      if (e.target===lightbox || e.target===lightboxImg || e.target===lightboxClose){
+        if (!start && !pinch) closeLightbox();
+      }
+    });
+
+    // Touch: pinch, pan, doppio tap
+    lightbox.addEventListener('touchstart', e=>{
+      if (lightbox.getAttribute('aria-hidden')==='true') return;
+      const t = touches(e); if (!t) return;
+      if (t.length===2){ pinch={ d0:dist(t[0],t[1]), z0:z }; start=null; }
+      else if (t.length===1 && z>1){ start={ x:t[0].x, y:t[0].y }; }
+    }, {passive:false});
+    lightbox.addEventListener('touchmove', e=>{
+      if (lightbox.getAttribute('aria-hidden')==='true') return;
+      const t = touches(e); if (!t) return;
+      if (t.length===2 && pinch){
+        e.preventDefault();
+        const d = dist(t[0],t[1]), m = mid(t[0],t[1]);
+        setZoom(pinch.z0*(d/pinch.d0), m.x, m.y);
+      } else if (t.length===1 && start && z>1){
+        e.preventDefault();
+        const dx = t[0].x - start.x, dy = t[0].y - start.y;
+        start = { x:t[0].x, y:t[0].y }; tx+=dx; ty+=dy; applyTransform();
+      }
+    }, {passive:false});
+    ['touchend','touchcancel'].forEach(ev=>lightbox.addEventListener(ev, ()=>{ pinch=null; start=null; applyTransform(); }));
+    lightbox.addEventListener('touchend', e=>{
+      const now=Date.now(), t=e.changedTouches?.[0]; if (!t) return;
+      const dt=now-lastTap.t, dx=Math.abs(t.clientX-lastTap.x), dy=Math.abs(t.clientY-lastTap.y);
+      lastTap={ t:now, x:t.clientX, y:t.clientY };
+      if (dt<300 && dx<30 && dy<30){
+        e.preventDefault(); setZoom(z>1?1:2, t.clientX, t.clientY);
+      }
+    }, {passive:false});
+
+    // Desktop pan + wheel zoom
+    lightboxImg.addEventListener('mousedown', e=>{ if (z>1) start={x:e.clientX,y:e.clientY}; });
+    window.addEventListener('mousemove', e=>{
+      if (!start || z===1) return;
+      const dx=e.clientX-start.x, dy=e.clientY-start.y;
+      start={x:e.clientX,y:e.clientY}; tx+=dx; ty+=dy; applyTransform();
+    });
+    window.addEventListener('mouseup', ()=>{ start=null; applyTransform(); });
+    lightbox.addEventListener('wheel', e=>{
+      if (lightbox.getAttribute('aria-hidden')==='true') return;
+      e.preventDefault(); setZoom(z*(1 + (-e.deltaY*0.0015)), e.clientX, e.clientY);
+    }, {passive:false});
+
+    // ---------- CAROUSELS ----------
+    let lastTouchTime = 0;   // per ignorare i ghost click dopo un touch
+
+    roots.forEach(root=>{
+      const slides = Array.from(root.querySelectorAll(".hm-slide"));
+      if (slides.length<3) return;
+
+      const prev  = root.querySelector(".hm-prev");
+      const next  = root.querySelector(".hm-next");
+      const track = root.querySelector(".hm-track");
+
+      // Caption vicina (se presente)
+      let captionEl =
+        root.querySelector(".hm-caption") ||
+        (root.nextElementSibling && root.nextElementSibling.classList?.contains('hm-caption') ? root.nextElementSibling : null) ||
+        root.parentElement?.querySelector?.('.hm-caption');
+
+      const captions = slides.map(el => el.dataset.caption?.trim() || el.querySelector("img")?.alt?.trim() || "");
+
+      // Stato per carousel
+      let i=0, startX=0, startY=0, dx=0, dy=0;
+      let isPointerDown=false, moved=false, isScrolling=false, suppressClick=false;
+      let firstRender=true, lastPointerType='mouse', startTarget=null;
+
+      const CLICK_THRESHOLD=10;   // più permissivo
+      const SCROLL_THRESHOLD=18;
+
+      const cssNum=prop=>{ const v=parseFloat(getComputedStyle(root).getPropertyValue(prop)); return Number.isFinite(v)?v:NaN; };
+      const getSideGap=()=>{ const v=cssNum("--hm-side-gap"); return Number.isFinite(v)?v:0.38; };
+
+      function updateCaption(){
+        if (!captionEl) return;
+        const text = captions[i] || "";
+        if (firstRender){ captionEl.textContent=text; captionEl.style.opacity=1; firstRender=false; return; }
+        captionEl.style.opacity=0; requestAnimationFrame(()=>{ captionEl.textContent=text; captionEl.style.opacity=0.92; });
+      }
+
+      function render(){
+        const N=slides.length, sideGap=getSideGap();
+        slides.forEach((el,k)=>{
+          let d=k-i; if (d> N/2) d-=N; if (d<-N/2) d+=N;
+          const baseX=d*sideGap;
+          const w=el.getBoundingClientRect().width||1;
+          const dragOffset=(dx/w);
+          const depth=Math.abs(d);
+          const translateX=(baseX - dragOffset)*100;
+          const scale = d===0?1:(Number.isFinite(cssNum("--hm-side-scale"))?cssNum("--hm-side-scale"):.82);
+          const opacitySide = Number.isFinite(cssNum("--hm-side-fade"))?cssNum("--hm-side-fade"):.55;
+          const opacity = d===0?1:(depth===1?opacitySide:0);
+
+          el.style.transform = `translateX(${translateX}%) scale(${d===0?1:scale})`;
+          el.style.opacity = opacity;
+          el.style.pointerEvents = d===0? "auto":"none";
+          el.style.filter = d===0? "none":"grayscale(.1) saturate(.9)";
+          el.style.zIndex = String(100 - depth);
+          el.ariaHidden = d===0? "false":"true";
+        });
+        updateCaption();
+      }
+
+      function go(delta){ i=(i+delta+slides.length)%slides.length; dx=0; dy=0; render(); }
+
+      // Pulsanti
+      next?.addEventListener("click", ()=>go(+1));
+      prev?.addEventListener("click", ()=>go(-1));
+
+      // Tastiera
+      root.tabIndex=0;
+      root.addEventListener("keydown", e=>{
+        if (e.key==="ArrowRight") go(+1);
+        if (e.key==="ArrowLeft")  go(-1);
+        if (e.key==="Enter" || e.key===" "){
+          const center=slides[i]; if (center) openLightboxFrom(center);
+        }
+      });
+
+      // --- Drag/Swipe + TAP affidabile ---
+      track.addEventListener("pointerdown", e=>{
+        lastPointerType = e.pointerType || 'mouse';
+        isPointerDown=true; moved=false; isScrolling=false;
+        startX=e.clientX; startY=e.clientY; dx=0; dy=0;
+        startTarget=e.target;
+        track.setPointerCapture?.(e.pointerId);
+        slides.forEach(s=>s.style.transition="none");
+      });
+      track.addEventListener("pointermove", e=>{
+        if (!isPointerDown) return;
+        dx=e.clientX-startX; dy=e.clientY-startY;
+        if (Math.abs(dy)>SCROLL_THRESHOLD && Math.abs(dy)>Math.abs(dx)) isScrolling=true;
+        if (Math.abs(dx)>CLICK_THRESHOLD || Math.abs(dy)>CLICK_THRESHOLD) moved=true;
+        if (!isScrolling) render();
+      });
+      track.addEventListener("pointerup", endPointer);
+      track.addEventListener("pointercancel", endPointer);
+
+      function endPointer(){
+        if (!isPointerDown) return;
+        isPointerDown=false; slides.forEach(s=>s.style.transition="");
+        if (isScrolling){
+          if (lastPointerType==='touch'){ suppressClick=true; setTimeout(()=>suppressClick=false,350); }
+          dx=0; render(); return;
+        }
+        const threshold=(root.clientWidth*0.08);
+        if (dx<-threshold){ go(+1); return; }
+        if (dx> threshold){ go(-1); return; }
+
+        // TAP: poco movimento + sulla centrale
+        const movedEnough = Math.abs(dx)>CLICK_THRESHOLD || Math.abs(dy)>CLICK_THRESHOLD;
+        if (!movedEnough){
+          const center=slides[i], from=startTarget?.closest?.('.hm-slide');
+          if (center && from === center){
+            openLightboxFrom(center); // apri SUBITO
+            if (lastPointerType==='touch'){ suppressClick=true; setTimeout(()=>suppressClick=false,350); }
+            return;
+          }
+        }
+        dx=0; render();
+      }
+
+      // Fallback touchend: apri anche se pointerup non arriva
+      track.addEventListener('touchend', e=>{
+        lastTouchTime = Date.now(); // per ignorare ghost click
+        if (isScrolling || suppressClick) return;
+        const t = e.changedTouches && e.changedTouches[0]; if (!t) return;
+        const movedEnough = Math.abs(dx)>CLICK_THRESHOLD || Math.abs(dy)>CLICK_THRESHOLD; if (movedEnough) return;
+        const tapTarget = document.elementFromPoint(t.clientX, t.clientY);
+        const slideEl = tapTarget && tapTarget.closest('.hm-slide'); if (!slideEl) return;
+        const idx = slides.indexOf(slideEl); if (idx!==i) return;
+        openLightboxFrom(slideEl);
+        suppressClick=true; setTimeout(()=>suppressClick=false,350);
+      }, {passive:true});
+
+      // Fallback click (desktop): ignora ghost click entro 400ms da un touch
+      track.addEventListener('click', e=>{
+        if (Date.now()-lastTouchTime < 400) return;
+        if (suppressClick) return;
+        const slideEl = e.target.closest('.hm-slide'); if (!slideEl) return;
+        const idx = slides.indexOf(slideEl); if (idx!==i) return;
+        openLightboxFrom(slideEl);
+      });
+
+      // Resize
+      const ro = new ResizeObserver(render); ro.observe(root);
+      render();
+    });
+  }
+})();
+</script>
+
 
   <!-- ======== SEZIONE 2 ======== -->
   <div id="container2" class="section-box mt-2"> <!-- 👈 PRIMA era "section", ora ha section-box -->
@@ -142,17 +579,19 @@
     </div>
 
     <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
-      <div class="hm-track" role="list">
-        <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 1 HyperMIST"></figure>
+    <div class="hm-track" role="list">
+              <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi1.jpg" alt="Vista 2 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi3.jpg" alt="Vista 2 HyperMIST"></figure>
-      </div>
-      <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
-      <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
-    </section>
-      <div class="col">
-    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
     </div>
+    <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+    <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+  </section>
+  <div class="hm-caption" aria-live="polite"></div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+  <img class="lightbox-img" alt="">
+</div>
   </div>
 
 <style>
@@ -176,24 +615,20 @@
     </p>
     </div>
         <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
-  <div class="hm-track" role="list">
-    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
-    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
-    <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 2 HyperMIST"></figure>
-    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_1.jpg" alt="Vista 3 HyperMIST"></figure>
-    <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_3.jpg" alt="Vista 4 HyperMIST"></figure>
-    <!-- Esempi extra -->
-    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
-    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
-  </div>
-
-  <!-- Controlli -->
-  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
-  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
-</section> 
-  <div class="col">
-    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
-  </div>
+    <div class="hm-track" role="list">
+        <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 2 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_1.jpg" alt="Vista 3 HyperMIST"></figure>
+        <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia_3.jpg" alt="Vista 4 HyperMIST"></figure>
+    </div>
+    <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+    <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+  </section>
+  <div class="hm-caption" aria-live="polite"></div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+  <img class="lightbox-img" alt="">
+</div>
     </div>
 
 <style>
@@ -217,27 +652,23 @@
     </p>
     </div>       
     <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
-  <div class="hm-track" role="list">
-    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
-     <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 1 HyperMIST"></figure>
+    <div class="hm-track" role="list">
+             <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 22T"><img src="img/cosmos22t.jpg" alt="Vista 4 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
-    <!-- Esempi extra -->
-    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
-    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
-  </div>
-
-  <!-- Controlli -->
-  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
-  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
-</section>       
-  <div class="col">
-    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
-  </div>
+      </div>
+    <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+    <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+  </section>
+  <div class="hm-caption" aria-live="polite"></div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+  <img class="lightbox-img" alt="">
+</div>
     </div>
 
 <style>
@@ -261,8 +692,7 @@
     </p>
     </div>
         <section class="hypermist-carousel" aria-label="Galleria prodotti HyperMIST">
-  <div class="hm-track" role="list">
-    <!-- Metti qui almeno 3 figure. Puoi aggiungerne quante vuoi -->
+    <div class="hm-track" role="list">
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 12"><img src="img/cosmos12.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 12 Inclinato"><img src="img/cosmos12_inclinato.jpg" alt="Vista 2 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Cosmos 22"><img src="img/cosmos22.jpg" alt="Vista 3 HyperMIST"></figure>
@@ -270,18 +700,15 @@
         <figure class="hm-slide" role="listitem" data-caption="Comb 1 L 10"><img src="img/comb1L10.jpg" alt="Vista 4 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Lancia Venturi"><img src="img/lancia.jpg" alt="Vista 1 HyperMIST"></figure>
         <figure class="hm-slide" role="listitem" data-caption="Venturi"><img src="img/venturi4.jpg" alt="Vista 1 HyperMIST"></figure>
-    <!-- Esempi extra -->
-    <!-- <figure class="hm-slide"><img src="img/4.jpg" alt=""></figure>
-    <figure class="hm-slide"><img src="img/5.jpg" alt=""></figure> -->
+      </div>
+    <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
+    <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
+  </section>
+    <div class="hm-caption" aria-live="polite"></div>
+      <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
+    <img class="lightbox-img" alt="">
   </div>
-
-  <!-- Controlli -->
-  <button class="hm-btn hm-prev" aria-label="Precedente" title="Precedente">❮</button>
-  <button class="hm-btn hm-next" aria-label="Successiva" title="Successiva">❯</button>
-</section>     
-  <div class="col">
-    <div class="hm-caption text-dark" aria-live="polite" aria-atomic="true"></div>
-  </div>    
     </div>
 
         </main>
