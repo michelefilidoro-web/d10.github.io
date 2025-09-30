@@ -68,3 +68,53 @@
   window.addEventListener('mouseout', reset);
 })();
 
+(function(){
+  function ready(fn){
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(fn,0);
+    else document.addEventListener('DOMContentLoaded', fn, { once:true });
+  }
+  ready(() => {
+    document.querySelectorAll('.hm-tech-toggle').forEach(btn => {
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
+
+      // >>> usa il <p> interno come label senza distruggere il markup
+      const labelEl =
+        btn.querySelector('.hm-tech-label') ||
+        btn.querySelector('p') ||
+        null;
+
+      function setLabel(text){
+        if (labelEl) labelEl.textContent = text;
+        else btn.textContent = text; // fallback se manca il <p>
+      }
+
+      function open(){
+        panel.classList.add('is-open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        setLabel('Nascondi scheda tecnica');
+      }
+      function close(){
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          panel.classList.remove('is-open');
+          panel.style.maxHeight = '0px';
+          btn.setAttribute('aria-expanded', 'false');
+          setLabel('Vedi scheda tecnica');
+        });
+      }
+      function toggle(){ (btn.getAttribute('aria-expanded')==='true') ? close() : open(); }
+
+      btn.addEventListener('click', toggle);
+      window.addEventListener('resize', () => {
+        if (btn.getAttribute('aria-expanded')==='true') {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+      }, { passive:true });
+    });
+  });
+})();
+
+

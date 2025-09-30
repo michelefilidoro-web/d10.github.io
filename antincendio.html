@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <!-- CSS personalizzato -->
   <link rel="stylesheet" href="stylepages.css">
+
   <style>
 /* ====== BASE ====== */
 * { box-sizing: border-box; }
@@ -151,6 +152,112 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
   /* centrale grande ma senza sforare: leggermente sotto al 100% */
   .hm-slide{ --hm-slide-w: 94%; }   /* puoi portare a 96% se vuoi più grande */
 }
+/* ===== Scheda tecnica – stile Apple-like ===== */
+:root{
+  --ap-bg:        #e9e9e9;    /* fondo pannello/tabella (grigio chiaro) */
+  --ap-bg-alt:    #d4d4d4;    /* righe alternate/header */
+  --ap-text:      #1e1e20;    /* testo principale */
+  --ap-muted:     #5a5a60;    /* testo secondario */
+  --ap-border:    #222222;    /* separatori principali */
+  --ap-border-2:  #363636;    /* separatori leggeri */
+  --ap-shadow:    0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.07);
+}
+
+/* Tipografia SF */
+.hm-tech-wrap,
+.hm-tech-wrap *{
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+/* Contenitore allineato */
+.hm-tech-wrap{
+  width: min(1100px, 90vw);
+  margin: 24px auto 0;
+  color: var(--ap-text);
+}
+
+/* Toggle: minimal, arrotondato, ombra leggera */
+/* Pannello: carta pulita con angoli morbidi */
+.hm-tech-panel{
+  overflow: hidden;
+  max-height: 0;                    /* chiuso (animato via JS) */
+  transition: max-height .35s ease;
+  border: 1px solid var(--ap-border);
+  border-radius: var(--ap-radius);
+  background: var(--ap-bg);
+  margin-top: 14px;
+  box-shadow: var(--ap-shadow);
+}
+.hm-tech-panel.is-open{ /* max-height impostata via JS */ }
+
+.hm-tech-inner{
+  padding: 14px;
+  overflow: auto;
+  max-height: min(68vh, 640px);
+}
+
+/* Tabella: bordi esterni sottili, interni chiarissimi */
+.hm-tech-table{
+  width: 100%;
+  border-collapse: separate;   /* per angoli arrotondati “reali” */
+  border-spacing: 0;
+  color: var(--ap-text);
+  font-size: 15px;
+  border: 1px solid var(--ap-border);
+  border-radius: calc(var(--ap-radius) - 2px);
+  overflow: hidden;            /* arrotonda gli angoli del contenuto */
+  background: var(--ap-bg);
+}
+
+/* Header sticky con bg appena diverso */
+.hm-tech-table thead th{
+  position: sticky; top: 0; z-index: 1;
+  background: var(--ap-bg-alt);
+  color: var(--ap-text);
+  text-align: left;
+  border-bottom: 1px solid var(--ap-border);
+  padding: 14px 16px;
+  font-weight: 600;
+}
+
+/* Celle corpo: più aria, separatori sottilissimi */
+.hm-tech-table tbody td{
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ap-border-2);
+  color: var(--ap-muted);
+}
+.hm-tech-table tbody tr:nth-child(even){ background: var(--ap-bg-alt); }
+.hm-tech-table tbody tr:hover{ background: #f6f7f8; }
+
+/* Bottone download: pill sottile, ombra soft */
+.btn-download{
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 36px; padding: 0 14px;
+  border: 1px solid var(--ap-border);
+  border-radius: 999px;                /* più “Apple” */
+  background: var(--ap-bg);
+  color: var(--ap-text);
+  font-weight: 600; text-decoration: none;
+  box-shadow: var(--ap-shadow);
+  transition: box-shadow .2s ease, transform .05s ease, background .2s ease;
+}
+.btn-download:hover{ box-shadow: 0 2px 10px rgba(0,0,0,.08); background: #fff; }
+.btn-download:active{ transform: translateY(1px); }
+.btn-download:focus-visible{ outline: 2px solid rgba(0, 125, 250, .6); outline-offset: 3px; }
+
+/* Mobile: tipografia un filo più compatta */
+@media (max-width: 768px){
+  .section-box .hm-tech-wrap{ width: 100%; padding: 0 12px; }
+  .hm-tech-table{ font-size: 14.5px; }
+  .hm-tech-table thead th, .hm-tech-table tbody td{ padding: 12px 14px; }
+}
+
+/* Accessibilità animazioni */
+@media (prefers-reduced-motion: reduce){
+  .hm-tech-panel{ transition: none; }
+}
 
 </style>
 </head>
@@ -283,6 +390,64 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
   <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
   <img class="lightbox-img" alt="">
 </div>
+<div class="hm-tech-wrap">
+<button class="btn btn-apple hm-tech-toggle" type="button"
+        aria-expanded="false" aria-controls="tech-1"
+        style="max-width:200px; max-height:40px;">
+  <p class="hm-tech-label" style="font-weight:400; font-size:small;">Vedi scheda tecnica</p>
+</button>
+
+
+  <div class="hm-tech-panel" id="tech-1">
+    <div class="hm-tech-inner">
+      <table class="hm-tech-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Numero Documento</th>
+            <th style="min-width:220px">Titolo</th>
+            <th>Descrizione</th>
+            <th style="width:140px">Download PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Compila TU queste righe: sono puro HTML -->
+          <tr>
+            <td>HM-001</td>
+            <td>Cosmos 12</td>
+            <td>Specifiche tecniche del modello 12.</td>
+            <td><a class="btn-download" href="pdf/cosmos12.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-002</td>
+            <td>Cosmos 12 Inclinato</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos12_inclinato.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-003</td>
+            <td>Cosmos 22</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-004</td>
+            <td>Cosmos 22T</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22t.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-005</td>
+            <td>Comb 1 L 10</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/comb1L10.pdf" download>Scarica</a></td>
+          </tr>
+          <!-- fine righe -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
   </div>
   <script>
 (function(){
@@ -592,6 +757,63 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
   <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
   <img class="lightbox-img" alt="">
 </div>
+<div class="hm-tech-wrap">
+<button class="btn btn-apple hm-tech-toggle" type="button"
+        aria-expanded="false" aria-controls="tech-2"
+        style="max-width:200px; max-height:40px;">
+  <p class="hm-tech-label" style="font-weight:400; font-size:small;">Vedi scheda tecnica</p>
+</button>
+
+
+  <div class="hm-tech-panel" id="tech-2">
+    <div class="hm-tech-inner">
+      <table class="hm-tech-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Numero Documento</th>
+            <th style="min-width:220px">Titolo</th>
+            <th>Descrizione</th>
+            <th style="width:140px">Download PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Compila TU queste righe: sono puro HTML -->
+          <tr>
+            <td>HM-001</td>
+            <td>Cosmos 12</td>
+            <td>Specifiche tecniche del modello 12.</td>
+            <td><a class="btn-download" href="pdf/cosmos12.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-002</td>
+            <td>Cosmos 12 Inclinato</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos12_inclinato.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-003</td>
+            <td>Cosmos 22</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-004</td>
+            <td>Cosmos 22T</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22t.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-005</td>
+            <td>Comb 1 L 10</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/comb1L10.pdf" download>Scarica</a></td>
+          </tr>
+          <!-- fine righe -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
   </div>
 
 <style>
@@ -628,6 +850,63 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
     <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
   <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
   <img class="lightbox-img" alt="">
+</div>
+<div class="hm-tech-wrap">
+<button class="btn btn-apple hm-tech-toggle" type="button"
+        aria-expanded="false" aria-controls="tech-3"
+        style="max-width:200px; max-height:40px;">
+  <p class="hm-tech-label" style="font-weight:400; font-size:small;">Vedi scheda tecnica</p>
+</button>
+
+
+  <div class="hm-tech-panel" id="tech-3">
+    <div class="hm-tech-inner">
+      <table class="hm-tech-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Numero Documento</th>
+            <th style="min-width:220px">Titolo</th>
+            <th>Descrizione</th>
+            <th style="width:140px">Download PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Compila TU queste righe: sono puro HTML -->
+          <tr>
+            <td>HM-001</td>
+            <td>Cosmos 12</td>
+            <td>Specifiche tecniche del modello 12.</td>
+            <td><a class="btn-download" href="pdf/cosmos12.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-002</td>
+            <td>Cosmos 12 Inclinato</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos12_inclinato.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-003</td>
+            <td>Cosmos 22</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-004</td>
+            <td>Cosmos 22T</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22t.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-005</td>
+            <td>Comb 1 L 10</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/comb1L10.pdf" download>Scarica</a></td>
+          </tr>
+          <!-- fine righe -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
     </div>
 
@@ -669,6 +948,63 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
   <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
   <img class="lightbox-img" alt="">
 </div>
+<div class="hm-tech-wrap">
+<button class="btn btn-apple hm-tech-toggle" type="button"
+        aria-expanded="false" aria-controls="tech-4"
+        style="max-width:200px; max-height:40px;">
+  <p class="hm-tech-label" style="font-weight:400; font-size:small;">Vedi scheda tecnica</p>
+</button>
+
+
+  <div class="hm-tech-panel" id="tech-4">
+    <div class="hm-tech-inner">
+      <table class="hm-tech-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Numero Documento</th>
+            <th style="min-width:220px">Titolo</th>
+            <th>Descrizione</th>
+            <th style="width:140px">Download PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Compila TU queste righe: sono puro HTML -->
+          <tr>
+            <td>HM-001</td>
+            <td>Cosmos 12</td>
+            <td>Specifiche tecniche del modello 12.</td>
+            <td><a class="btn-download" href="pdf/cosmos12.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-002</td>
+            <td>Cosmos 12 Inclinato</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos12_inclinato.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-003</td>
+            <td>Cosmos 22</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-004</td>
+            <td>Cosmos 22T</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22t.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-005</td>
+            <td>Comb 1 L 10</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/comb1L10.pdf" download>Scarica</a></td>
+          </tr>
+          <!-- fine righe -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
     </div>
 
 <style>
@@ -709,6 +1045,63 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
     <button class="lightbox-close" type="button" aria-label="Chiudi (Esc)">×</button>
     <img class="lightbox-img" alt="">
   </div>
+  <div class="hm-tech-wrap">
+<button class="btn btn-apple hm-tech-toggle" type="button"
+        aria-expanded="false" aria-controls="tech-5"
+        style="max-width:200px; max-height:40px;">
+  <p class="hm-tech-label" style="font-weight:400; font-size:small;">Vedi scheda tecnica</p>
+</button>
+
+
+  <div class="hm-tech-panel" id="tech-5">
+    <div class="hm-tech-inner">
+      <table class="hm-tech-table">
+        <thead>
+          <tr>
+            <th style="width:160px">Numero Documento</th>
+            <th style="min-width:220px">Titolo</th>
+            <th>Descrizione</th>
+            <th style="width:140px">Download PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Compila TU queste righe: sono puro HTML -->
+          <tr>
+            <td>HM-001</td>
+            <td>Cosmos 12</td>
+            <td>Specifiche tecniche del modello 12.</td>
+            <td><a class="btn-download" href="pdf/cosmos12.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-002</td>
+            <td>Cosmos 12 Inclinato</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos12_inclinato.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-003</td>
+            <td>Cosmos 22</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-004</td>
+            <td>Cosmos 22T</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/cosmos22t.pdf" download>Scarica</a></td>
+          </tr>
+          <tr>
+            <td>HM-005</td>
+            <td>Comb 1 L 10</td>
+            <td></td>
+            <td><a class="btn-download" href="pdf/comb1L10.pdf" download>Scarica</a></td>
+          </tr>
+          <!-- fine righe -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
     </div>
 
         </main>
